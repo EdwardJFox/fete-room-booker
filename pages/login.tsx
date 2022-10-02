@@ -1,9 +1,13 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import { useSession, signIn, signOut } from "next-auth/react"
 
-const Home: NextPage = () => {
+import styles from '../styles/Login.module.css'
+
+const Login: NextPage = () => {
+  const { data: session } = useSession()
+
   return (
     <div>
       <Head>
@@ -13,12 +17,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <h1 className="text-3xl font-bold underline">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        <h1>
+          Login
         </h1>
+        <button onClick={() => signIn()}>Sign in</button>
       </main>
     </div>
   )
 }
 
-export default Home
+export default Login

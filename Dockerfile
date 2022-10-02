@@ -1,7 +1,7 @@
 # Dockerfile
 
 # Use node alpine as it's a small node image
-FROM node:16-alpine
+FROM --platform=linux/amd64 node:16-alpine
 
 # Create the directory on the node image 
 # where our Next.js app will live
@@ -14,8 +14,13 @@ WORKDIR /app
 # to the /app working directory
 COPY package*.json /app
 
+# Prisma working directory
+COPY prisma ./prisma/
+
 # Install dependencies in /app
-RUN yarn install
+RUN npm install
+
+RUN npx prisma generate
 
 # Copy the rest of our Next.js folder into /app
 COPY . /app
