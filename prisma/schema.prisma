@@ -28,6 +28,8 @@ model Account {
   provider           String
   providerAccountId  String
   refresh_token      String?  @db.Text
+  refresh_token_type String?  @db.Text
+  refresh_token_expires_in Int?
   access_token       String?  @db.Text
   expires_at         Int?
   token_type         String?
@@ -56,8 +58,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  invitedTo     Group    @relation("invitees", fields: [invitedToId], references: [id])
-  invitedToId   Int      @unique
+  invitedTo     Group?    @relation("invitees", fields: [invitedToId], references: [id])
+  invitedToId   Int?      @unique
   ownerOf       Group?
 }
 

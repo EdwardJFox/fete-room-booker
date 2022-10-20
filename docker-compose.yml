@@ -12,15 +12,15 @@ services:
       - POSTGRES_DB=root
     ports:
       - 5432:5432
-  next:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: next
-    restart: always
-    volumes:
-      - ./:/app
-      - /app/node_modules
-      - /app/.next
-    ports:
-      - 3000:3000
+  # next:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: next
+  #   restart: always
+  #   volumes:
+  #     - ./:/app
+  #     - /app/node_modules
+  #     - /app/.next
+  #   ports:
+  #     - 3000:3000
