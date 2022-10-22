@@ -1,9 +1,45 @@
 import type { NextPage } from 'next'
+import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
-import Layout from '../components/layout'
+import prisma from "../lib/prismadb";
 import { H1 } from '../components/Typography'
+import { authOptions } from './api/auth/[...nextauth]'
+import HomeLoggedInScreen from '../components/screens/Home/loggedIn';
+import HomeLoggedOutScreen from '../components/screens/Home/loggedOut';
 
-const Home: NextPage = () => {
+export const getServerSideProps = async ({ req, res }) => {
+  const session = await unstable_getServerSession(req, res, authOptions)
+  console.log("session", session)
+  if (session) {
+    const userWithGroup = await prisma.user.findUnique({
+      where: {
+        email: session?.user.email
+      },
+      include: {
+        groupMember: {
+          include: {
+            group: true
+          }
+        },
+      },
+    })
+
+    return {
+      props: { 
+        loggedIn: true,
+        userWithGroup: JSON.parse(JSON.stringify(userWithGroup))
+      }
+    }
+  }
+
+  return {
+    props: {
+      loggedIn: false
+    }
+  }
+}
+
+const Home: NextPage = ({ loggedIn, userWithGroup }) => {
   return (
     <>
       <Head>
@@ -13,6 +49,12 @@ const Home: NextPage = () => {
       </Head>
 
       <H1>Fete room booker</H1>
+
+      { loggedIn ?
+        <HomeLoggedInScreen userWithGroup={userWithGroup} />
+        :
+        <HomeLoggedOutScreen />
+      }
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 const ProtectedPageWrapper = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
