@@ -9,7 +9,7 @@ import HomeLoggedOutScreen from '../components/screens/Home/loggedOut';
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
-  console.log("session", session)
+
   if (session) {
     const userWithGroup = await prisma.user.findUnique({
       where: {

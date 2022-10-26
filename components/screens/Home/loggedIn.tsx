@@ -1,8 +1,6 @@
 const HomeLoggedInScreen = ({ userWithGroup }) => {
-  console.log("userWithGroup", userWithGroup)
-
   if (userWithGroup.groupMember) {
-
+    
   }
 
   return (
