@@ -22,7 +22,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
     })
 
     if (user.groupMember) {
-      console.log("user", user)
       return {
         props: {
           user: JSON.parse(JSON.stringify(user))
@@ -52,7 +51,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
 
 const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
   const router = useRouter()
-  console.log("router", router)
   const { code } = router.query;
 
   const [error, setError] = useState<null | string>();

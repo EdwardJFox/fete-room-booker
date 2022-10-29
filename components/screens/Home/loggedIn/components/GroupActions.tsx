@@ -4,7 +4,6 @@ import { P } from "../../../../Typography";
 
 const GroupActions = ({ code }) => {
   const router = useRouter();
-  console.log("router", router)
 
   const removeSelfFromGroup = () => {
     const response = confirm("Are you sure you want to remove yourself from this group? You will need to be re-accepted to re-join.");
