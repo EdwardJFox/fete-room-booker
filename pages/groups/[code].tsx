@@ -3,7 +3,7 @@ import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import ProtectedPageWrapper from '../../components/ProtectedPageWrapper';
+import LoggedInPageWrapper from '../../components/LoggedInPageWrapper';
 import { H1, P } from '../../components/Typography';
 import prisma from "../../lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
@@ -85,7 +85,7 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
         <title>Join group!</title>
       </Head>
 
-      <ProtectedPageWrapper>
+      <LoggedInPageWrapper>
         { !group && 
           <>
             <H1>Group not found!</H1>
@@ -99,7 +99,7 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
             <button onClick={joinGroup}></button>
           </>
         }
-      </ProtectedPageWrapper>
+      </LoggedInPageWrapper>
     </>
   )
 }

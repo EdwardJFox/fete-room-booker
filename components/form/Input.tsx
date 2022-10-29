@@ -12,6 +12,7 @@ const Input = ({ type="text", value, onChange, name, disabled=false }: InputProp
       className="bg-slate-200"
       type={type}
       value={value}
+      checked={value}
       id={name}
       name={name}
       onChange={({ target: { value }}) => onChange && onChange(value, name)} />

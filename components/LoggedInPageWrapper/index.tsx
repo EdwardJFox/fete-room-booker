@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
 
-const ProtectedPageWrapper = ({ children }: { children: ReactNode }) => {
+const LoggedInPageWrapper = ({ children }: { children: ReactNode }) => {
   const router = useRouter()
 
   const { status } = useSession({
@@ -19,4 +19,4 @@ const ProtectedPageWrapper = ({ children }: { children: ReactNode }) => {
   return children;
 }
 
-export default ProtectedPageWrapper;
+export default LoggedInPageWrapper;

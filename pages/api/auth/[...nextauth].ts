@@ -14,6 +14,10 @@ export const authOptions = {
     error: '/auth/error'
   },
   callbacks: {
+    session: async (session, user) => {
+      session.session.user.admin = session.user.admin;
+      return Promise.resolve(session.session);
+    },
     async signIn({ user: { email }}) {
       const user = await prisma.user.findUnique({
         where: {
