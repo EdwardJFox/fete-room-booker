@@ -20,7 +20,6 @@ export const createAccounts = async () => {
   const allParticipants = await getAllParticipants();
 
   allParticipants.forEach(async (participant) => {
-    console.log("participant", participant)
     if (participant.email) {
       const existingUser = await prisma.user.findUnique({
         where: {
