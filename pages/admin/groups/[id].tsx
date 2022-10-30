@@ -11,20 +11,39 @@ import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
 import { H1 } from '../../../components/Typography';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
+import AdminGroupMembers from './components/AdminGroupMembers';
 
 export const getServerSideProps = async ({ req, res, query }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
 
   if (session) {
-    const user = await prisma.user.findUnique({
+    const group = await prisma.group.findUnique({
       where: {
         id: parseInt(query.id)
+      },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                name: true,
+                email: true,
+                image: true
+              }
+            }
+          },
+          orderBy: [
+            {
+              userId: 'asc',
+            }
+          ],
+        }
       }
     })
 
     return {
       props: { 
-        user: JSON.parse(JSON.stringify(user))
+        group: JSON.parse(JSON.stringify(group))
       }
     }
   }
@@ -32,39 +51,33 @@ export const getServerSideProps = async ({ req, res, query }) => {
   return {}
 }
 
-const AdminUsersEdit: NextPage = ({ user }) => {
+const AdminGroupsEdit: NextPage = ({ group }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState(group);
 
-  const submitUser = () => {
-    fetch(`/api/admin/users/${user.id}`, {
+  const submitGroup = () => {
+    fetch(`/api/admin/groups/${group.id}`, {
       method: "PATCH",
       body: JSON.stringify({
         name: formData.name,
-        admin: formData.admin,
+        members: formData.members
       })
     }).then((res) => {
       if (res.status === 200) {
-        router.push("/admin/users")
+        router.push("/admin/groups")
       }
     })
   }
 
-  // const removeUser = () => {
-  //   if (confirm("Please confirm you want to remove this user from the system")) {
-  //     fetch(`/api/admin/users/${user.id}`, {
-  //       method: "DELETE"
-  //     }).then((res) => {
-  //       if (res.status === 200) {
-  //         router.push("/admin/users")
-  //       }
-  //     })
-  //   }
-  // }
-
-  const handleInputChange = (value: string, name: string) => {
+  const handleInputChange = (value: any, name: string) => {
     const newValues = { ...formData };
     newValues[name] = value;
+    setFormData(newValues);
+  }
+
+  const handleMembersUpdate = (members: any) => {
+    const newValues = { ...formData };
+    newValues.members = members;
     setFormData(newValues);
   }
 
@@ -72,12 +85,11 @@ const AdminUsersEdit: NextPage = ({ user }) => {
     <LoggedInPageWrapper>
       <AdminPageWrapper>
         <Head>
-          <title>{ user.name } - User Admin</title>
+          <title>{ group.name } - Group Admin</title>
         </Head>
 
-        <Link href="/admin/users">Back</Link>
-        <H1>Edit { user.name }</H1>
-        {/* <button onClick={removeUser}>Remove</button> */}
+        <Link href="/admin/groups">Back</Link>
+        <H1>Edit Group - { group.name }</H1>
 
         <TextField
           label="Name"
@@ -85,16 +97,20 @@ const AdminUsersEdit: NextPage = ({ user }) => {
           value={formData["name"]}
           onChange={handleInputChange} />
 
-        <CheckBox
-          label="Admin"
-          name="admin"
-          value={formData["admin"]}
+        <TextField
+          label="Code"
+          name="code"
+          value={formData["code"]}
           onChange={handleInputChange} />
 
-        <button onClick={submitUser}>Save</button>
+        <AdminGroupMembers          
+          members={formData.members}
+          setMembers={handleMembersUpdate} />
+
+        <button onClick={submitGroup}>Save</button>
       </AdminPageWrapper>
     </LoggedInPageWrapper>
   )
 }
 
-export default AdminUsersEdit
+export default AdminGroupsEdit

@@ -15,14 +15,17 @@ export const getServerSideProps = async ({ req, res, query }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
 
   if (session) {
-    const users = await prisma.user.findMany({
+    const groups = await prisma.group.findMany({
       skip: query?.page ? (query.code - 1) * PAGINATION  : 0,
       take: PAGINATION,
+      include: {
+        members: true
+      }
     })
 
     return {
       props: { 
-        users: JSON.parse(JSON.stringify(users))
+        groups: JSON.parse(JSON.stringify(groups))
       }
     }
   }
@@ -30,32 +33,30 @@ export const getServerSideProps = async ({ req, res, query }) => {
   return {}
 }
 
-const AdminUsersIndex: NextPage = ({ users }) => {
+const AdminGroupsIndex: NextPage = ({ groups }) => {
   return (
     <LoggedInPageWrapper>
       <AdminPageWrapper>
         <Head>
-          <title>User Admin</title>
+          <title>Groups Admin</title>
         </Head>
 
-        <H1>Users Admin</H1>
+        <H1>Groups Admin</H1>
 
         <Table>
           <THead>
             <TR>
               <TH>Name</TH>
-              <TH>Email</TH>
-              <TH>Admin</TH>
+              <TH>Member count</TH>
               <TH>Actions</TH>
             </TR>
           </THead>
           <TBody>
-            { users.map((user) => 
-              <TR key={user.id}>
-                <TD>{ user.name }</TD>
-                <TD>{ user.email }</TD>
-                <TD>{ user.admin ? "Yes" : "No" }</TD>
-                <TD><Link href={`/admin/users/${user.id}`}>Edit</Link></TD>
+            { groups.map((group: any) => 
+              <TR key={group.id}>
+                <TD>{ group.name }</TD>
+                <TD>{ group.members.length }</TD>
+                <TD><Link href={`/admin/groups/${group.id}`}>Edit</Link></TD>
               </TR>
             )}
           </TBody>
@@ -65,4 +66,4 @@ const AdminUsersIndex: NextPage = ({ users }) => {
   )
 }
 
-export default AdminUsersIndex
+export default AdminGroupsIndex
