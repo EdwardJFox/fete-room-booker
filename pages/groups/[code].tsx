@@ -21,7 +21,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
       },
     })
 
-    if (user.groupMember) {
+    if (user?.groupMember) {
       return {
         props: {
           user: JSON.parse(JSON.stringify(user))
@@ -56,10 +56,11 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
   const [error, setError] = useState<null | string>();
 
   useEffect(() => {
-    if (user.groupMember) {
+    console.log("user", user)
+    if (user?.groupMember) {
       router.push("/")
     }
-  }, [])
+  }, [user])
 
 
   const joinGroup = () => {
@@ -96,7 +97,7 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
           <>
           <H1>You have been invited to join { group.name }</H1>
             <P>Do you want to join this group?</P>
-            <button onClick={joinGroup}></button>
+            <button onClick={joinGroup}>Join</button>
           </>
         }
       </LoggedInPageWrapper>

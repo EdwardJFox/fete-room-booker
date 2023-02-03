@@ -9,6 +9,8 @@ const AdminPageWrapper = ({ children }: { children: ReactNode }) => {
 
   if (!session?.data?.user.admin) {
     router.push("/");
+
+    return null;
   }
 
   return children;

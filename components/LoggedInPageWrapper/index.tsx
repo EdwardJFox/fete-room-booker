@@ -8,7 +8,7 @@ const LoggedInPageWrapper = ({ children }: { children: ReactNode }) => {
   const { status } = useSession({
     required: true,
     onUnauthenticated() {
-      router.push("/login")
+      router.push("/")
     },
   })
   
