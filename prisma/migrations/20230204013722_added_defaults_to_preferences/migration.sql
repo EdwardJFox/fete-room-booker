@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Preference" ALTER COLUMN "typeOfRoom" SET DEFAULT 'QUIET',
+ALTER COLUMN "dietary" SET DEFAULT 'NONE';

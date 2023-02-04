@@ -72,6 +72,26 @@ model User {
   groupMember   GroupMember?
   admin         Boolean   @default(false)
   sentInviteEmailAt DateTime?
+  preferences   Preference?
+}
+
+enum PreferenceTypeOfRoom {
+  QUIET
+  PARTY
+}
+
+enum PreferenceDietaryRequirements {
+  NONE
+  VEGAN
+  VEGETARIAN
+}
+
+model Preference {
+  id          Int                   @id @default(autoincrement())
+  userId      Int                   @unique
+  user        User                  @relation(fields: [userId], references: [id])
+  typeOfRoom  PreferenceTypeOfRoom? @default(QUIET)
+  dietary     PreferenceDietaryRequirements? @default(NONE)
 }
 
 model VerificationToken {

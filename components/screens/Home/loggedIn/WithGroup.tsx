@@ -1,4 +1,5 @@
 import { H1, P } from "../../../Typography";
+import UserPreferencesForm from "../../../UserPreferences/Form";
 import GroupActions from "./components/GroupActions";
 import GroupMembers from "./components/GroupMembers";
 
@@ -13,6 +14,7 @@ const LoggedInWithGroupScreen = ({ user, group }) => {
       <H1>{ group.name }</H1>
       <GroupMembers members={group.members} isOwner={user.groupMember.owner} groupId={group.id} />
       <GroupActions code={group.code} />
+      <UserPreferencesForm preferences={user.preferences} />
     </>
   )
 }

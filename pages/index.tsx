@@ -22,6 +22,7 @@ export const getServerSideProps = async ({ req, res }) => {
             group: true
           }
         },
+        preferences: true
       },
     })
 

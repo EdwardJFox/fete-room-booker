@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import TextField from "../../../form/TextField";
+import UserPreferencesForm from "../../../UserPreferences/Form";
 
-const LoggedInNoGroupScreen = () => {
+const LoggedInNoGroupScreen = ({ user }) => {
   const router = useRouter()
   const [code, setCode] = useState(router.query.code || "");
   const [groupName, setGroupName] = useState("");
@@ -57,6 +58,7 @@ const LoggedInNoGroupScreen = () => {
         onChange={(value) => setGroupName(value)} />
       <button onClick={submitNewGroup}>Create new group</button>
       { error && <p>{ error }</p>}
+      <UserPreferencesForm preferences={user.preferences} />
     </>
   )
 }

@@ -16,7 +16,7 @@ router
     const { id } = req.query;
     const body = JSON.parse(req.body);
 
-    await prisma.group.update({ 
+    await prisma.group.update({
       where: {
         id: parseInt(id),
       },

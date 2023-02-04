@@ -9,6 +9,7 @@ import CheckBox from '../../../components/form/CheckBox';
 import TextField from '../../../components/form/TextField';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
 import { H1 } from '../../../components/Typography';
+import UserPreferencesView from '../../../components/UserPreferences/View';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 
@@ -19,6 +20,9 @@ export const getServerSideProps = async ({ req, res, query }) => {
     const user = await prisma.user.findUnique({
       where: {
         id: parseInt(query.id)
+      },
+      include: {
+        preferences: true
       }
     })
 
@@ -62,12 +66,12 @@ const AdminUsersEdit: NextPage = ({ user }) => {
   //   }
   // }
 
-  const handleInputChange = (value: string, name: string) => {
+  const handleInputChange = (value: string | boolean, name: string) => {
     const newValues = { ...formData };
     newValues[name] = value;
     setFormData(newValues);
   }
-
+  console.log("user", user)
   return (
     <LoggedInPageWrapper>
       <AdminPageWrapper>
@@ -88,10 +92,13 @@ const AdminUsersEdit: NextPage = ({ user }) => {
         <CheckBox
           label="Admin"
           name="admin"
-          value={formData["admin"]}
+          value="admin"
+          checked={formData["admin"]}
           onChange={handleInputChange} />
 
         <button onClick={submitUser}>Save</button>
+
+        <UserPreferencesView preferences={user.preferences} />
       </AdminPageWrapper>
     </LoggedInPageWrapper>
   )
