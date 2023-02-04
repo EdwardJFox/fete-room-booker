@@ -9,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Atkinson Hyperlegible', ...defaultTheme.fontFamily.sans],
+        'body': ['Atkinson Hyperlegible', ...defaultTheme.fontFamily.sans],
+        'header': ['Poppins', ...defaultTheme.fontFamily.sans],
       },
     }
   },
