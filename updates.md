@@ -1,0 +1,3 @@
+- Event log
+- List your preferences (Party room/Quiet area) on the logged on page so users who don't get put with loud people when you wanted a quiet.
+- Admin notes on the User/Group admin page.

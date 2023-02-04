@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns'
 import type { NextPage } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
@@ -88,6 +89,10 @@ const AdminUsersEdit: NextPage = ({ user }) => {
           name="name"
           value={formData["name"]}
           onChange={handleInputChange} />
+        
+        <p><b>Email:</b> { user.email }</p>
+        <p><b>Email invite sent at:</b> { user.sentEmailInviteAt ? format(parseISO(user.sentEmailInviteAt), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
+        <p><b>Email verified at:</b> { user.emailVerified ? format(parseISO(user.emailVerified), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
 
         <CheckBox
           label="Admin"

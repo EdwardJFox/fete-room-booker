@@ -1,3 +1,4 @@
+import { Atkinson_Hyperlegible } from '@next/font/google'
 import { ReactNode } from "react"
 import Header from "./Header"
 import Main from "./Main"
@@ -8,9 +9,14 @@ type LayoutProps = {
   children: ReactNode
 }
 
+const atkinsonsHyperlegible = Atkinson_Hyperlegible({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="w-full h-screen flex flex-col flex-nowrap">
+    <div className={`w-full h-screen flex flex-col flex-nowrap ${atkinsonsHyperlegible.className}`}>
       <Head>
         <meta name="description" content="Roombooker" />
         <link rel="icon" href="/favicon.ico" />

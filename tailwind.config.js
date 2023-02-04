@@ -1,3 +1,5 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -6,7 +8,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-    },
+      fontFamily: {
+        'sans': ['Atkinson Hyperlegible', ...defaultTheme.fontFamily.sans],
+      },
+    }
   },
   plugins: [],
 }
