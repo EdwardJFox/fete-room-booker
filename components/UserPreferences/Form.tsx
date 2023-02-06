@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../Button";
 import Radio from "../form/Radio";
 
 const UserPreferencesForm = ({ preferences }) => {
@@ -23,7 +24,7 @@ const UserPreferencesForm = ({ preferences }) => {
   }
 
   return (
-    <>
+    <div className="my-4 p-6 bg-secondary-600 rounded-md">
       <h2>Preferences</h2>
       <p><b>Room Type</b></p>
       <Radio
@@ -59,8 +60,8 @@ const UserPreferencesForm = ({ preferences }) => {
         checked={userPreferences["dietary"] === "VEGAN"}
         onChange={handleInputChange} />
       <br />
-      <button onClick={savePreferences}>Save Preferences</button>
-    </>
+      <Button onClick={savePreferences}>Save Preferences</Button>
+    </div>
   )
 }
 
