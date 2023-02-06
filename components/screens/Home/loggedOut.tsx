@@ -1,7 +1,9 @@
 
 import { signIn } from "next-auth/react";
+import Image from 'next/image'
 import { useState } from "react";
-import { H2, P } from "../../Typography";
+import Button from "../../Button";
+import TextField from "../../form/TextField";
 
 const HomeLoggedOutScreen = () => {
   const [email, setEmail] = useState("");
@@ -22,23 +24,42 @@ const HomeLoggedOutScreen = () => {
 
   return (
     <>
-      <H2>Sign in</H2>    
-      <P>This service is for users signed up with accommodation to the Fete 3 Start.gg event. If you haven't signed up yet, go <a href="google.com">to sign up first and come back here when you have received your room booking email!</a></P>
-      
-      <form onSubmit={onFormSubmit}>
-        <label>
-          Email address
-          <input type="email" id="email" name="email" required autoFocus onChange={(e) => setEmail(e.target.value)} />
-        </label>
+      <div className="text-center p-4">
+        <Image
+          src="/fete3_logo.png"
+          alt="Fete 3 Logo"
+          width={400}
+          height={400}
+          className="mx-auto"
+        />
+      </div>
 
-        { error && <P>Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</P>}
+      <div className="m-4 p-6 bg-secondary-600 rounded-md max-w-md sm:mx-auto">
+        <h2 className="mb-4">Sign in</h2>
+        <p className="text-sm leading-7">This is for users signed up with accommodation for Fete 3, to organise groups into rooms. If you haven't signed up yet, go <a href="https://fete.gg/" className="underline">here</a> to sign up, and come back when you have received your room booking email!</p>
+        
+        <form onSubmit={onFormSubmit}>
+          <TextField
+            value={email}
+            name="email"
+            onChange={(value) => setEmail(value)}
+            type="email"
+            required
+            autoFocus
+            placeholder="Email address used on Start.gg"
+          />
 
-        { success ? 
-          <P>An email has been sent to you with a magic link</P>
-          :
-          <button type="submit">Sign in with Email</button>
-        }
-      </form>
+          { error && <p>Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
+
+          { success ? 
+            <p>An email has been sent to you with a magic link</p>
+            :
+            <div className="text-right">
+              <Button type="submit">Sign in with email</Button>
+            </div>
+          }
+        </form>
+      </div>
     </>
   )
 }

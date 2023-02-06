@@ -1,18 +1,17 @@
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
-import { P } from "../Typography";
 
 const Header = () => {
   const session = useSession();
 
   return (
-    <header className="bg-orange-600 px-4 py-2">
-      <Link href="/" className="text-l font-bold text-white">
-        Fete Room Booker
+    <header className="border-b-2 border-secondary-400 px-4 py-3">
+      <Link href="/" className="text-l text-white">
+        Fete 3 Accommodation Organiser
       </Link>
       { session && session.status === "authenticated" &&
         <>
-          { session?.data?.user?.name && <P>{ session?.data?.user?.name }</P> }
+          { session?.data?.user?.name && <p>{ session?.data?.user?.name }</p> }
           <button onClick={() => signOut()}>Sign out</button>
         </>
       }

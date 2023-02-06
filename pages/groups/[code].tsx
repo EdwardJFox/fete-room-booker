@@ -4,7 +4,6 @@ import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import LoggedInPageWrapper from '../../components/LoggedInPageWrapper';
-import { H1, P } from '../../components/Typography';
 import prisma from "../../lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
 
@@ -89,14 +88,14 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
       <LoggedInPageWrapper>
         { !group && 
           <>
-            <H1>Group not found!</H1>
-            <P>Check the code and try again</P>
+            <h1>Group not found!</h1>
+            <p>Check the code and try again</p>
           </>
         }
         { group &&
           <>
-          <H1>You have been invited to join { group.name }</H1>
-            <P>Do you want to join this group?</P>
+          <h1>You have been invited to join { group.name }</h1>
+            <p>Do you want to join this group?</p>
             <button onClick={joinGroup}>Join</button>
           </>
         }

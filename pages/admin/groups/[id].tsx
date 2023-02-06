@@ -5,10 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import AdminPageWrapper from '../../../components/AdminPageWrapper';
-import CheckBox from '../../../components/form/CheckBox';
 import TextField from '../../../components/form/TextField';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import { H1 } from '../../../components/Typography';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import AdminGroupMembers from './components/AdminGroupMembers';
@@ -89,7 +87,7 @@ const AdminGroupsEdit: NextPage = ({ group }) => {
         </Head>
 
         <Link href="/admin/groups">Back</Link>
-        <H1>Edit Group - { group.name }</H1>
+        <h1>Edit Group - { group.name }</h1>
 
         <TextField
           label="Name"

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import AdminPageWrapper from '../../../components/AdminPageWrapper';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
 import { Table, TBody, TH, THead, TR, TD } from '../../../components/Table';
-import { H1 } from '../../../components/Typography';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 
@@ -41,7 +40,7 @@ const AdminGroupsIndex: NextPage = ({ groups }) => {
           <title>Groups Admin</title>
         </Head>
 
-        <H1>Groups Admin</H1>
+        <h1>Groups Admin</h1>
 
         <Table>
           <THead>

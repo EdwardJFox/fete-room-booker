@@ -1,11 +1,12 @@
 type LabelProps = {
   htmlFor: string;
   text: string
+  className?: string
 }
 
-const Label = ({ htmlFor, text }: LabelProps) => {
+const Label = ({ htmlFor, text, className }: LabelProps) => {
   return (
-    <label htmlFor={htmlFor}>{ text }</label>
+    <label htmlFor={htmlFor} className={`${className}`}>{ text }</label>
   )
 }
 

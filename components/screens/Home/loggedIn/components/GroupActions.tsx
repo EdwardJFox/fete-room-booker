@@ -1,6 +1,5 @@
 import { useRouter } from "next/router"
 import Input from "../../../../form/Input";
-import { P } from "../../../../Typography";
 
 const GroupActions = ({ code }) => {
   const router = useRouter();
@@ -20,7 +19,7 @@ const GroupActions = ({ code }) => {
   return (
     <>
       <button onClick={removeSelfFromGroup}>Remove Myself from group</button>
-      <P>To invite people to this group, send them the link below:</P>
+      <p>To invite people to this group, send them the link below:</p>
       <Input value={`http://localhost:3000/groups/${code}`} name="groupCode" disabled />
     </>    
   )

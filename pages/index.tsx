@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
 import prisma from "../lib/prismadb";
-import { H1 } from '../components/Typography'
 import { authOptions } from './api/auth/[...nextauth]'
 import HomeLoggedOutScreen from '../components/screens/Home/loggedOut';
 import LoggedInWithGroupScreen from '../components/screens/Home/loggedIn/WithGroup';
@@ -79,10 +78,8 @@ const Home: NextPage = ({ loggedIn, user, group }) => {
   return (
     <>
       <Head>
-        <title>Fete 3 Room booker</title>
+        <title>Fete 3 - Accommodation Organiser</title>
       </Head>
-
-      <H1>Fete room booker</H1>
 
       { loggedIn ?
         user.groupMember ?

@@ -9,7 +9,6 @@ import AdminPageWrapper from '../../../components/AdminPageWrapper';
 import CheckBox from '../../../components/form/CheckBox';
 import TextField from '../../../components/form/TextField';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import { H1 } from '../../../components/Typography';
 import UserPreferencesView from '../../../components/UserPreferences/View';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
@@ -81,7 +80,7 @@ const AdminUsersEdit: NextPage = ({ user }) => {
         </Head>
 
         <Link href="/admin/users">Back</Link>
-        <H1>Edit { user.name }</H1>
+        <h1>Edit { user.name }</h1>
         {/* <button onClick={removeUser}>Remove</button> */}
 
         <TextField

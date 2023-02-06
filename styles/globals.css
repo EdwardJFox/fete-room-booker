@@ -2,8 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    @apply bg-secondary-900;
+  }
+  h1 {
+    @apply text-3xl;
+  }
+  h2 {
+    @apply text-2xl;
+  }
 
-body, #__next {
-  min-height: 100vh;
-  min-width: 100vh;
+  h1, h2, h3, h4, h5, p, b, label {
+    @apply text-white;
+  }
 }

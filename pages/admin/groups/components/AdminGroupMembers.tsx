@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import TextField from "../../../../components/form/TextField";
 import { Table, THead, TBody, TR, TH, TD } from "../../../../components/Table";
-import { P } from "../../../../components/Typography";
 
 const AdminGroupMembers = ({ members, setMembers }) => {
   const router = useRouter();
@@ -116,7 +115,7 @@ const AdminGroupMembers = ({ members, setMembers }) => {
           label="New users email"
           value={newUsersEmail}
           onChange={(value) => setNewUsersEmail(value)} />          
-        {newUserError && <P>{ newUserError }</P>}
+        {newUserError && <p>{ newUserError }</p>}
         <button onClick={addNewGroupMember}>Save member</button>
       </>}
     </>

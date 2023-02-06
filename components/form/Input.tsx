@@ -5,18 +5,20 @@ type InputProps = {
   onChange?: (value: string, name: string) => void;
   disabled?: boolean;
   checked?: boolean;
+  className?: string;
 }
 
-const Input = ({ type="text", value, onChange, name, disabled=false, checked }: InputProps) => {
+const Input = ({ type="text", value, onChange, name, disabled=false, checked, className }: InputProps) => {
   return (
     <input
-      className="bg-slate-200"
+      className={`bg-slate-200 ${className}`}
       type={type}
       value={value}
       checked={checked}
       id={name}
       name={name}
-      onChange={({ target: { value }}) => onChange && onChange(value, name)} />
+      onChange={({ target: { value }}) => onChange && onChange(value, name)}
+      disabled={disabled} />
   )
 }
 

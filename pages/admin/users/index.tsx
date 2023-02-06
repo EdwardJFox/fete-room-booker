@@ -5,7 +5,6 @@ import Link from 'next/link';
 import AdminPageWrapper from '../../../components/AdminPageWrapper';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
 import { Table, TBody, TH, THead, TR, TD } from '../../../components/Table';
-import { H1 } from '../../../components/Typography';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 
@@ -38,7 +37,7 @@ const AdminUsersIndex: NextPage = ({ users }) => {
           <title>User Admin</title>
         </Head>
 
-        <H1>Users Admin</H1>
+        <h1>Users Admin</h1>
 
         <Table>
           <THead>

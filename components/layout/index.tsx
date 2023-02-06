@@ -23,7 +23,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={`w-full h-screen flex flex-col flex-nowrap ${atkinsonsHyperlegible.className} ${poppins.className}`}>
       <Head>
-        <meta name="description" content="Roombooker" />
+        <meta name="description" content="Fete 3 - Accommodation" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
