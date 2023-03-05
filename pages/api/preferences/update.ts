@@ -32,6 +32,7 @@ export default async function handler(
             data: {
               typeOfRoom: body.userPreferences.typeOfRoom || null,
               dietary: body.userPreferences.dietary || null,
+              comments: body.userPreferences.comments || null,
               user: {
                 connect: {
                   id: user.id
@@ -47,6 +48,7 @@ export default async function handler(
             data: {
               typeOfRoom: body.userPreferences.typeOfRoom,
               dietary: body.userPreferences.dietary,
+              comments: body.userPreferences.comments,
             }
           });
         }

@@ -3,6 +3,7 @@ import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Button from '../../components/Button';
 import LoggedInPageWrapper from '../../components/LoggedInPageWrapper';
 import prisma from "../../lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
@@ -82,23 +83,27 @@ const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
   return (
     <>
       <Head>
-        <title>Join group!</title>
+        <title>Join Group</title>
       </Head>
 
       <LoggedInPageWrapper>
-        { !group && 
-          <>
-            <h1>Group not found!</h1>
-            <p>Check the code and try again</p>
-          </>
-        }
-        { group &&
-          <>
-          <h1>You have been invited to join { group.name }</h1>
-            <p>Do you want to join this group?</p>
-            <button onClick={joinGroup}>Join</button>
-          </>
-        }
+        <div className="m-4 p-6 bg-secondary-600 rounded-md max-w-xl sm:mx-auto">
+
+          { !group && 
+            <>
+              <h1>Group not found!</h1>
+              <p>Check the code and try again</p>
+            </>
+          }
+          { group &&
+            <>
+              <h1>You have been invited to join:</h1>
+              <h1>{ group.name }</h1>
+              <p className="my-4">Do you want to join this group?</p>
+              <Button onClick={joinGroup}>Join</Button>
+            </>
+          }
+        </div>
       </LoggedInPageWrapper>
     </>
   )

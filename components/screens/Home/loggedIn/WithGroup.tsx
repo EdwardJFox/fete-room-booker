@@ -1,20 +1,49 @@
+import { Prisma } from "@prisma/client";
 import UserPreferencesForm from "../../../UserPreferences/Form";
-import GroupActions from "./components/GroupActions";
+import GroupHeader from "./components/GroupHeader";
 import GroupMembers from "./components/GroupMembers";
+import Pending from "./components/Pending";
+
+type LoggedInWithGroupScreenProps = {
+  user: Prisma.UserGetPayload<{
+    include: {
+      groupMember: true,
+      preferences: true,
+    }
+  }>;
+
+  group: Prisma.GroupGetPayload<{
+    include: {
+      members: {
+        include: {
+          user: true
+        }
+      }
+    }
+  }>
+};
 
 // Default screen for showing the group you are in and its details
-const LoggedInWithGroupScreen = ({ user, group }) => {
-  if (!user.groupMember.approved) {
-    return <p>Your join request to { group.name } is pending!</p>
+const LoggedInWithGroupScreen = ({ user, group }: LoggedInWithGroupScreenProps) => {
+  if (!user?.groupMember?.approved) {
+    return (
+      <Pending
+        groupName={group.name}
+        preferences={user.preferences}/>
+    );
   }
 
   return (
-    <>
-      <h1>{ group.name }</h1>
-      <GroupMembers members={group.members} isOwner={user.groupMember.owner} groupId={group.id} />
-      <GroupActions code={group.code} />
+    <div className="max-w-2xl mx-2 sm:mx-auto">
+      <GroupHeader name={group.name} />
+      <GroupMembers
+        members={group.members}
+        isOwner={user.groupMember.owner}
+        loggedInUserId={user.id}
+        groupId={group.id}
+        code={group.code} />
       <UserPreferencesForm preferences={user.preferences} />
-    </>
+    </div>
   )
 }
 

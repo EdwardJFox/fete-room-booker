@@ -34,6 +34,14 @@ export const getServerSideProps = async ({ req, res }) => {
       const groupInclude = user?.groupMember.approved ?
         {
           members: {
+            orderBy: [
+              {
+                owner: 'desc',
+              },
+              {
+                approved: 'asc'
+              }
+            ],
             include: {
               user: {
                 select: {

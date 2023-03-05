@@ -36,7 +36,7 @@ const HomeLoggedOutScreen = () => {
 
       <div className="m-4 p-6 bg-secondary-600 rounded-md max-w-md sm:mx-auto">
         <h2 className="mb-4">Sign in</h2>
-        <p className="text-sm leading-7">This is for users signed up with accommodation for Fete 3, to organise groups into rooms. If you haven't signed up yet, go <a href="https://fete.gg/" className="underline">here</a> to sign up, and come back when you have received your room booking email!</p>
+        <p className="text-sm leading-7">This is for users signed up with accommodation for Fete 3, to organise groups into rooms. If you haven't registered for the event yet, go <a href="https://fete.gg/" className="underline">here</a> to sign up, and come back when you have received your room booking email!</p>
         
         <form onSubmit={onFormSubmit}>
           <TextField
@@ -52,10 +52,10 @@ const HomeLoggedOutScreen = () => {
           { error && <p>Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
 
           { success ? 
-            <p>An email has been sent to you with a magic link</p>
+            <p className="mt-2 border-green-400 border-2 rounded-md p-4 text-center">An email has been sent to you with a magic link</p>
             :
-            <div className="text-right">
-              <Button type="submit">Sign in with email</Button>
+            <div className="sm:text-right">
+              <Button type="submit" className="w-full mt-2">Sign in with email</Button>
             </div>
           }
         </form>

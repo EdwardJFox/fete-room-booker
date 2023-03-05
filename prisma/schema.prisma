@@ -14,7 +14,7 @@ model Group {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String   @db.VarChar(255)
+  name      String   @db.VarChar(30)
   code      String   @unique
   members   GroupMember[]
 }
@@ -92,6 +92,7 @@ model Preference {
   user        User                  @relation(fields: [userId], references: [id])
   typeOfRoom  PreferenceTypeOfRoom? @default(QUIET)
   dietary     PreferenceDietaryRequirements? @default(NONE)
+  comments    String?
 }
 
 model VerificationToken {

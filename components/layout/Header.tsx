@@ -16,7 +16,7 @@ const Header = () => {
           height={36}
           className="mx-auto inline-block"
         />
-        <span className="pl-3">Fete 3 Accommodation Organiser</span>
+        <span className="pl-3">Fete 3</span>
       </Link>
       <span className="flex items-center">
         { session && session.status === "authenticated" &&

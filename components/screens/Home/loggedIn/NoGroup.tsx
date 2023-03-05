@@ -1,9 +1,19 @@
+import { Prisma } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Button from "../../../Button";
 import TextField from "../../../form/TextField";
 import UserPreferencesForm from "../../../UserPreferences/Form";
 
-const LoggedInNoGroupScreen = ({ user }) => {
+type LoggedInNoGroupScreenProps = {
+  user: Prisma.UserGetPayload<{
+    include: {
+      preferences: true
+    }
+  }>;
+}
+
+const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
   const router = useRouter()
   const [code, setCode] = useState(router.query.code || "");
   const [groupName, setGroupName] = useState("");
@@ -40,26 +50,38 @@ const LoggedInNoGroupScreen = ({ user }) => {
   }
 
   return (
-    <>
-      <p>If you have the code, you can join a group:</p>
-      <TextField
-        value={code}
-        label="Code"
-        name="code"
-        onChange={(value) => setCode(value)} />
-      <button onClick={joinGroup}>Join Group</button>
-      <hr />
-      <p>You're not part of any group yet, you can make one below!</p>
-      <p>Creating a group will allow you to organise your accommodation with your friends at Fete 3!</p>
-      <TextField
-        value={groupName}
-        label="Group Name"
-        name="groupName"
-        onChange={(value) => setGroupName(value)} />
-      <button onClick={submitNewGroup}>Create new group</button>
-      { error && <p>{ error }</p>}
+    <div className="max-w-2xl mx-2 sm:mx-auto">
+      <div className="py-3 px-4 my-4 bg-secondary-600 rounded-md">
+        <h2 className="mb-3">Join a group</h2>
+        <p>If you have the code, you can join a group:</p>
+        <div className="flex items-end mt-3">
+          <TextField
+            className="flex-1"
+            value={code}
+            label="Code"
+            name="code"
+            onChange={(value) => setCode(value)} />
+          <Button className="flex-initial ml-3" onClick={joinGroup}>Join Group</Button>
+        </div>
+      </div>
+
+      <div className="py-3 px-4 bg-secondary-600 rounded-md">
+        <h2 className="mb-3">Start a new group</h2>
+        <p>Creating a group will allow you to organise your accommodation with your friends at Fete 3!</p>
+        <div className="md:flex md:items-end mt-3">
+          <TextField
+            className="flex-1"
+            value={groupName}
+            label="Group Name (Max 30 characters)"
+            name="groupName"
+            onChange={(value) => setGroupName(value)}
+            max={30} />
+          <Button className="flex-initial w-full mt-2 md:ml-3 md:mt- md:w-auto" onClick={submitNewGroup}>Create new group</Button>
+        </div>
+        { error && <p>{ error }</p>}
+      </div>
       <UserPreferencesForm preferences={user.preferences} />
-    </>
+    </div>
   )
 }
 

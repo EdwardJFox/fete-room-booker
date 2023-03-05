@@ -9,6 +9,15 @@ const nextConfig = {
   //   }
   //   return config
   // },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.start.gg',
+        port: '',
+      },
+    ],
+  },
 }
 
 module.exports = nextConfig

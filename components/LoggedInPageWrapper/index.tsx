@@ -13,7 +13,7 @@ const LoggedInPageWrapper = ({ children }: { children: ReactNode }) => {
   })
   
   if (status === "loading") {
-    return "Loading...";
+    return <p>Loading...</p>;
   }
   
   return children;

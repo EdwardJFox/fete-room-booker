@@ -11,7 +11,7 @@ type InputProps = {
 const Input = ({ type="text", value, onChange, name, disabled=false, checked, className }: InputProps) => {
   return (
     <input
-      className={`bg-slate-200 ${className}`}
+      className={`bg-slate-200 ${className || ""}`}
       type={type}
       value={value}
       checked={checked}

@@ -1,7 +1,28 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCheckCircle, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { Prisma } from "@prisma/client";
 import { useState } from "react";
 
-const GroupMembers = ({ isOwner, members, groupId }) => {
+import useCopyToClipboard from "../../../../../hooks/useCopyToClipboard";
+import GroupMemberRow from "./GroupMemberRow";
+
+type GroupMembersProps = {
+  code: string
+  isOwner: boolean;
+  groupId: number;
+  loggedInUserId: number;
+  members: Prisma.GroupMemberGetPayload<{
+    include: {
+      user: true;
+    }
+  }>[];
+}
+
+const GroupMembers = ({ isOwner, members, groupId, loggedInUserId, code }: GroupMembersProps) => {
   const [currentMembers, setCurrentMembers] = useState(members);
+  const [value, copy] = useCopyToClipboard()
+
+  const url = `${process.env.NEXT_PUBLIC_SITE_BASE_PATH}/groups/${code}`;
   
   const handleRemove = (userId: number) => {
     fetch(`/api/groups/${groupId}/remove`, {
@@ -31,24 +52,24 @@ const GroupMembers = ({ isOwner, members, groupId }) => {
 
   return (
     <>
-      { members.map((member) =>
-        <div key={member.userId}>
-          { member.user.name }
-          <img src={member.user.image} />
-
-          { isOwner && !member.owner &&
-            <>
-              { member.approved ?
-                <button onClick={() => handleRemove(member.userId)}>Remove</button>
-                :
-                <>
-                  <button onClick={() => handleApprove(member.userId)}>Approve</button>
-                  <button onClick={() => handleRemove(member.userId)}>Remove</button>
-                </>
-              }
-            </>
+      <div className="flex items-center justify-between mt-3 mb-2">
+        <h2 className="inline">Members</h2>
+        <button onClick={() => copy(url)} className="ml-3 text-white block">
+          { value ?
+            <><FontAwesomeIcon icon={faCheckCircle} height={22} className="inline text-green-300" /> Copied!</>
+            :
+            <><FontAwesomeIcon icon={faCopy} height={22} className="inline" /> Copy join URL</>
           }
-        </div>
+        </button>
+      </div>
+      { members.map((member) =>
+        <GroupMemberRow
+          key={member.userId}
+          member={member}
+          onRemove={handleRemove}
+          onApprove={handleApprove}
+          isOwner={isOwner}
+          isSelf={member.userId === loggedInUserId} />
       ) }
     </>
   )
