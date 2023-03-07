@@ -1,3 +1,4 @@
+import { Group, Prisma } from '@prisma/client';
 import type { NextPage } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
@@ -23,9 +24,10 @@ export const getServerSideProps = async ({ req, res, query }) => {
 
     if (user?.groupMember) {
       return {
-        props: {
-          user: JSON.parse(JSON.stringify(user))
-        }
+        redirect: {
+          destination: '/',
+          permanent: true,
+        },
       }
     }
 
@@ -44,24 +46,19 @@ export const getServerSideProps = async ({ req, res, query }) => {
 
   return {
     props: {
-      loggedIn: false
     }
   }
 }
 
-const JoinGroup: NextPage = ({ loggedIn, user, group }) => {
+type JoinGroupProps = {
+  group: Group;
+}
+
+const JoinGroup: NextPage<JoinGroupProps> = ({ group }) => {
   const router = useRouter()
   const { code } = router.query;
 
   const [error, setError] = useState<null | string>();
-
-  useEffect(() => {
-    console.log("user", user)
-    if (user?.groupMember) {
-      router.push("/")
-    }
-  }, [user])
-
 
   const joinGroup = () => {
     fetch("/api/groups/join", {

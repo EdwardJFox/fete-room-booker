@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import prisma from '../../../../lib/prismadb';
@@ -48,7 +49,7 @@ export default async function handler(
 
         res.status(200)
       } else {
-        res.status(500).json({
+        res.status(404).json({
           error: "User not found"
         })
       }

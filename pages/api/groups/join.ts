@@ -13,6 +13,12 @@ export default async function handler(
     if (session) {
       const body = JSON.parse(req.body)
 
+      if (!body.code) {
+        return res.status(400).json({
+          error: 'Code missing'
+        })
+      }
+
       const user = await prisma.user.findUnique({
         where: {
           email: session.user.email
@@ -28,7 +34,7 @@ export default async function handler(
         }
       })
 
-      if (user.groupMember) {
+      if (user?.groupMember) {
         res.status(500).json({
           error: "Already part of a group!"
         })
@@ -44,7 +50,7 @@ export default async function handler(
 
         res.status(201)
       } else {
-        res.status(500).json({
+        res.status(404).json({
           error: "Not found"
         })
       }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import SaveButton from "../Button/SaveButton";
 import Radio from "../form/Radio";
 import TextArea from "../form/TextArea";
+import InfoMessage from "../InfoMessage";
 
 type UserPreferencesFormProps = {
   preferences: Preference | null;
@@ -20,8 +21,6 @@ const UserPreferencesForm = ({ preferences }: UserPreferencesFormProps) => {
   const [formError, setFormError] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
-    console.log("field", field)
-    console.log("value", value)
     const newUserPreferences = { ...userPreferences };
     newUserPreferences[field] = value;
     setUserPreferences(newUserPreferences);
@@ -101,7 +100,7 @@ const UserPreferencesForm = ({ preferences }: UserPreferencesFormProps) => {
         </SaveButton>
         { formSaved && <p className="ml-2">Saved!</p>}
       </div>
-      { formError && <p className="mt-2 border-red-400 border-2 rounded-md p-4 text-center">An error occurred, please try again later</p>}
+      { formError && <InfoMessage style="danger" className="mt-2">An error occurred, please try again later</InfoMessage>}
     </div>
   )
 }

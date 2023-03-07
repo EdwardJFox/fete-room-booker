@@ -9,7 +9,7 @@ const checkSession = () => async (req: NextApiRequest, res: NextApiResponse, nex
     req.session = session;
     return next();
   } else {
-    return res.status(401).end('Not authed');
+    return res.status(401).json({ message: 'Not authed' });
   }
 }
 

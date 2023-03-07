@@ -16,6 +16,10 @@ router
     const { id } = req.query;
     const body = JSON.parse(req.body)
 
+    if (!body.name || body.name === "") {
+      return res.status(400).json({ error: "User must have a name/tag." })
+    }
+
     await prisma.user.update({ 
       where: {
         id: parseInt(id),

@@ -4,7 +4,7 @@ const isAdmin = () => (req: NextApiRequest, res: NextApiResponse, next) => {
   if (req.user.admin) {
     return next();
   } else {
-    return res.status(401).end('Not admin');
+    return res.status(401).json({ error: 'Not admin' });
   }
 }
 

@@ -26,7 +26,7 @@ export default async function handler(
 
         res.status(200);
       } else {
-        res.status(500).json({
+        res.status(404).json({
           error: "User not found"
         })
       }

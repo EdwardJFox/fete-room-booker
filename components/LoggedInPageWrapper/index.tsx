@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactElement } from "react";
 
-const LoggedInPageWrapper = ({ children }: { children: ReactNode }) => {
+const LoggedInPageWrapper = ({ children }: { children: ReactElement }): ReactElement => {
   const router = useRouter()
 
   const { status } = useSession({

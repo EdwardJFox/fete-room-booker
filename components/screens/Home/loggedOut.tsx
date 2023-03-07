@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useState } from "react";
 import Button from "../../Button";
 import TextField from "../../form/TextField";
+import InfoMessage from "../../InfoMessage";
 
 const HomeLoggedOutScreen = () => {
   const [email, setEmail] = useState("");
@@ -52,7 +53,7 @@ const HomeLoggedOutScreen = () => {
           { error && <p>Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
 
           { success ? 
-            <p className="mt-2 border-green-400 border-2 rounded-md p-4 text-center">An email has been sent to you with a magic link</p>
+            <InfoMessage style="success" className="mt-2">An email has been sent to you with a magic link</InfoMessage>
             :
             <div className="sm:text-right">
               <Button type="submit" className="w-full mt-2">Sign in with email</Button>

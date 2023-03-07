@@ -18,9 +18,24 @@ router
     const newUserToAdd = await prisma.user.findUnique({
       where: {
         email: body.email
+      },
+      include: {
+        groupMember: true
       }
     })
 
+    if (!newUserToAdd) {
+      return res.status(404).json({
+        error: "User not found."
+      });
+    }
+
+    if (newUserToAdd.groupMember) {
+      return res.status(400).json({
+        error: "User already in a group, so can't be added."
+      });
+    }
+    
     if (newUserToAdd && !isNaN(parseInt(body.groupId))) {
       const member = await prisma.groupMember.create({ 
         data: {
@@ -30,13 +45,15 @@ router
         include: {
           user: true
         }
-      })
+      });
   
       return res.status(201).json({
         member
-      })
+      });
     } else {
-      return res.status(404).end("Not found")
+      return res.status(500).json({
+        error: "Something went wrong, try again later or contact support."
+      })
     }
   })
 

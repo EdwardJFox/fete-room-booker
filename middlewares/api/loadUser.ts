@@ -15,7 +15,7 @@ const loadUser = () => async (req: NextApiRequest, res: NextApiResponse, next) =
     req.user = user;
     return next();
   } else {
-    return res.status(404).end('User not found')
+    return res.status(404).json({ error: 'User not found' })
   }
 }
 

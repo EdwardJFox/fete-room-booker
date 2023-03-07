@@ -7,7 +7,7 @@ type TableComponentProps = {
 
 export const Table = ({ children, className }: TableComponentProps) => {
   return (
-    <table className={`${className ? className : ""}`}>{ children }</table>
+    <table className={`w-full ${className ? className : ""}`}>{ children }</table>
   )
 }
 
@@ -31,12 +31,12 @@ export const TR = ({ children, className }: TableComponentProps) => {
 
 export const TD = ({ children, className }: TableComponentProps) => {
   return (
-    <td className={`${className ? className : ""}`}>{ children }</td>
+    <td className={`py-2 px-3 ${className ? className : ""}`}>{ children }</td>
   )
 }
 
 export const TH = ({ children, className }: TableComponentProps) => {
   return (
-    <th className={`${className ? className : ""}`}>{ children }</th>
+    <th className={`py-2 px-3 text-left ${className ? className : ""}`}>{ children }</th>
   )
 }

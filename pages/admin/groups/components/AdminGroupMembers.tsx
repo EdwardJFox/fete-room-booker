@@ -1,16 +1,36 @@
+import { Prisma } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Button from "../../../../components/Button";
 import TextField from "../../../../components/form/TextField";
+import InfoMessage from "../../../../components/InfoMessage";
 import { Table, THead, TBody, TR, TH, TD } from "../../../../components/Table";
 
-const AdminGroupMembers = ({ members, setMembers }) => {
+type Member = Prisma.GroupMemberGetPayload<{
+  include: {
+    user: {
+      select: {
+        name: true,
+        email: true,
+        image: true
+      }
+    }
+  }
+}>;
+
+type AdminGroupMembersProps = {
+  members: Member[];
+  setMembers: (members: Member[]) => void;
+}
+
+const AdminGroupMembers = ({ members, setMembers }: AdminGroupMembersProps) => {
   const router = useRouter();
   const { id } = router.query;
   const [addingNewMember, setAddingNewMember] = useState(false);
   const [newUsersEmail, setNewUsersEmail] = useState("");
-  const [newUserError, setNewUserError] = useState(null);
+  const [newUserError, setNewUserError] = useState<null | string>(null);
 
-  const removeGroupMember = (index, member) => {
+  const removeGroupMember = (index: number, member: Member) => {
     if (confirm(`Are you sure you want to remove ${member.user.name} from this group?`)) {
       fetch(`/api/admin/group_members/${member.userId}`, {
         method: "DELETE"
@@ -32,20 +52,20 @@ const AdminGroupMembers = ({ members, setMembers }) => {
         email: newUsersEmail
       })
     }).then((res) => {
-      if (res.status === 201) {
+      if (res.ok) {
         return res.json();
       } else {
-        throw new Error("Not found")
+        return res.json().then(({ error }) => { throw new Error(error) });
       }
     }).then(({ member }) => {
       const newMembers = [...members];
       newMembers.push(member);
       setMembers(newMembers);
-      setAddingNewMember(false)
-      setNewUsersEmail("")
-      setNewUserError(null)
+      setAddingNewMember(false);
+      setNewUsersEmail("");
+      setNewUserError(null);
     }).catch((err) => {
-      setNewUserError("Not found!")
+      setNewUserError(err.message);
     })
   }
 
@@ -82,41 +102,47 @@ const AdminGroupMembers = ({ members, setMembers }) => {
 
   return (
     <>
-      <Table>
-        <THead>
-          <TR>
-            <TH>Name</TH>
-            <TH>Email</TH>
-            <TH>Approved</TH>
-            <TH>Owner</TH>
-            <TH>Actions</TH>
-          </TR>
-        </THead>
-        <TBody>
-          { members.map((member, index) =>
-            <TR key={member.userId}>
-              <TD>{ member.user.name }</TD>
-              <TD>{ member.user.email }</TD>
-              <TD>{ member.approved ? "Yes" : "No" }</TD>
-              <TD>{ member.owner ? "Yes" : "No" }</TD>
-              <TD>
-                { !member.approved && <button onClick={() => approveGroupMember(index, member)}>Approve</button> }
-                <button onClick={() => toggleOwner(index, member)}>{ member.owner ? "Remove owner" : "Set as an owner" }</button>
-                <button onClick={() => removeGroupMember(index, member)}>Remove</button>
-              </TD>
+      <h3 className="text-2xl">Group Members</h3>
+      { members.length > 0 ?
+        <Table className="text-white mt-3 mb-5">
+          <THead>
+            <TR>
+              <TH>Name</TH>
+              <TH>Email</TH>
+              <TH>Approved</TH>
+              <TH>Owner</TH>
+              <TH>Actions</TH>
             </TR>
-          )}
-        </TBody>
-      </Table>
-      { !addingNewMember && <button onClick={() => setAddingNewMember(true)}>Add new member</button> }
+          </THead>
+          <TBody>
+            { members.map((member, index) =>
+              <TR key={member.userId} className="odd:bg-secondary-400">
+                <TD>{ member.user.name }</TD>
+                <TD>{ member.user.email }</TD>
+                <TD>{ member.approved ? "Yes" : "No" }</TD>
+                <TD>{ member.owner ? "Yes" : "No" }</TD>
+                <TD>
+                  { !member.approved && <Button size="sm" style="success" className="mr-2" onClick={() => approveGroupMember(index, member)}>Approve</Button> }
+                  <Button size="sm" className="mr-2" onClick={() => toggleOwner(index, member)}>{ member.owner ? "Remove owner" : "Make owner" }</Button>
+                  <Button size="sm" style="danger" onClick={() => removeGroupMember(index, member)}>Remove</Button>
+                </TD>
+              </TR>
+            )}
+          </TBody>
+        </Table>
+        :
+        <p className="text-white my-4">No members found!</p>
+      }
+      { !addingNewMember && <Button onClick={() => setAddingNewMember(true)} className="mr-3">Add new member</Button> }
       { addingNewMember && <>
         <TextField
+          className="mb-3"
           name="email"
           label="New users email"
           value={newUsersEmail}
           onChange={(value) => setNewUsersEmail(value)} />          
-        {newUserError && <p>{ newUserError }</p>}
-        <button onClick={addNewGroupMember}>Save member</button>
+        { newUserError && <InfoMessage style="danger" className="mb-3">{ newUserError }</InfoMessage> }
+        <Button onClick={addNewGroupMember} className="mr-3">Save member</Button>
       </>}
     </>
   )

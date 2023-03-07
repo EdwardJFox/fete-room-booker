@@ -53,7 +53,7 @@ export default async function handler(
           group
         })
       } else {
-        res.status(500).json({
+        res.status(404).json({
           error: "User not found"
         })
       }

@@ -8,10 +8,10 @@ const router = createRouter<NextApiRequest, NextApiResponse>();
 export const handlerOptions = {
   onError: (err, req, res) => {
     console.error(err.stack);
-    res.status(500).end("Something broke!");
+    res.status(500).json({ error: "Something broke!" });
   },
   onNoMatch: (req, res) => {
-    res.status(404).end("Page is not found");
+    res.status(404).json({ error: "Page is not found" });
   },
 }
  

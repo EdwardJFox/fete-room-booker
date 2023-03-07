@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
-const AdminPageWrapper = ({ children }: { children: ReactNode }) => {
+const AdminPageWrapper = ({ children }: { children: ReactNode }): ReactElement => {
   const router = useRouter()
 
   const session = useSession()
@@ -10,10 +10,10 @@ const AdminPageWrapper = ({ children }: { children: ReactNode }) => {
   if (!session?.data?.user.admin) {
     router.push("/");
 
-    return null;
+    return <></>;
   }
 
-  return children;
+  return <>{children}</>;
 }
 
 export default AdminPageWrapper;

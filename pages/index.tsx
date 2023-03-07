@@ -6,6 +6,7 @@ import { authOptions } from './api/auth/[...nextauth]'
 import HomeLoggedOutScreen from '../components/screens/Home/loggedOut';
 import LoggedInWithGroupScreen from '../components/screens/Home/loggedIn/WithGroup';
 import LoggedInNoGroupScreen from '../components/screens/Home/loggedIn/NoGroup';
+import { Prisma } from '@prisma/client';
 
 export const getServerSideProps = async ({ req, res }) => {
   const session = await unstable_getServerSession(req, res, authOptions)
@@ -82,7 +83,23 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 }
 
-const Home: NextPage = ({ loggedIn, user, group }) => {
+type HomeProps = {
+  loggedIn: boolean;
+  user: Prisma.UserGetPayload<{
+    include: { groupMember: { include: { group: true } }, preferences: true }
+  }>;
+  group: Prisma.GroupGetPayload<{
+    include: {
+      members: {
+        include: {
+          user: true
+        }
+      }
+    }
+  }>;
+}
+
+const Home: NextPage<HomeProps> = ({ loggedIn, user, group }) => {
   return (
     <>
       <Head>

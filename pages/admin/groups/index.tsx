@@ -1,12 +1,14 @@
+import { Prisma } from '@prisma/client';
 import type { NextPage } from 'next'
 import { unstable_getServerSession } from 'next-auth'
 import Head from 'next/head'
-import Link from 'next/link';
 import AdminPageWrapper from '../../../components/AdminPageWrapper';
+import ButtonLink from '../../../components/Button/ButtonLink';
 import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
 import { Table, TBody, TH, THead, TR, TD } from '../../../components/Table';
 import prisma from "../../../lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
+import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 
 const PAGINATION = 25;
 
@@ -32,34 +34,58 @@ export const getServerSideProps = async ({ req, res, query }) => {
   return {}
 }
 
-const AdminGroupsIndex: NextPage = ({ groups }) => {
+type AdminGroupsIndexProps = {
+  groups: Prisma.GroupGetPayload<{
+    include: {
+      members: true
+    }
+  }>[];
+}
+
+const AdminGroupsIndex: NextPage<AdminGroupsIndexProps> = ({ groups }) => {
   return (
     <LoggedInPageWrapper>
       <AdminPageWrapper>
-        <Head>
-          <title>Groups Admin</title>
-        </Head>
+        <>
+          <Head>
+            <title>Groups Admin</title>
+          </Head>
 
-        <h1>Groups Admin</h1>
+          <div className="max-w-5xl mx-auto">
+            <HeaderBreadcrumbs pages={[
+              {
+                href: '/admin',
+                title: 'Admin Dash'
+              }, {
+                href: '/admin/groups',
+                title: 'Groups'
+              }
+            ]} />
 
-        <Table>
-          <THead>
-            <TR>
-              <TH>Name</TH>
-              <TH>Member count</TH>
-              <TH>Actions</TH>
-            </TR>
-          </THead>
-          <TBody>
-            { groups.map((group: any) => 
-              <TR key={group.id}>
-                <TD>{ group.name }</TD>
-                <TD>{ group.members.length }</TD>
-                <TD><Link href={`/admin/groups/${group.id}`}>Edit</Link></TD>
-              </TR>
-            )}
-          </TBody>
-        </Table>
+            <div className="bg-secondary-600 rounded-md p-4">
+              <Table className="text-white">
+                <THead>
+                  <TR>
+                    <TH>Name</TH>
+                    <TH>Member count</TH>
+                    <TH>Actions</TH>
+                  </TR>
+                </THead>
+                <TBody>
+                  { groups.map((group: any) => 
+                    <TR key={group.id} className="odd:bg-secondary-400">
+                      <TD>{ group.name }</TD>
+                      <TD>{ group.members.length }</TD>
+                      <TD>
+                        <ButtonLink href={`/admin/groups/${group.id}`} size="sm">Edit</ButtonLink>
+                      </TD>
+                    </TR>
+                  )}
+                </TBody>
+              </Table>
+            </div>
+          </div>
+        </>
       </AdminPageWrapper>
     </LoggedInPageWrapper>
   )
