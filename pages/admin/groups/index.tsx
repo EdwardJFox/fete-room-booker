@@ -51,7 +51,7 @@ const AdminGroupsIndex: NextPage<AdminGroupsIndexProps> = ({ groups }) => {
             <title>Groups Admin</title>
           </Head>
 
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-5xl mx-auto mb-8">
             <HeaderBreadcrumbs pages={[
               {
                 href: '/admin',

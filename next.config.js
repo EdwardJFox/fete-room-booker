@@ -16,6 +16,11 @@ const nextConfig = {
         hostname: 'images.start.gg',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'loremflickr.com',
+        port: ''
+      }
     ],
   },
 }

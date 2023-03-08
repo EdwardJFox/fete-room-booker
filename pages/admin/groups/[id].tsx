@@ -122,25 +122,27 @@ const AdminGroupsEdit: NextPage<AdminGroupsEditProps> = ({ group }) => {
           ]} />
 
           <div className="mx-2 sm:mx-auto my-4 px-6 py-5 bg-secondary-600 rounded-md">
-            <TextField
-              label="Name"
-              name="name"
-              value={formData["name"]}
-              onChange={handleInputChange}
-              className="mb-4" />
+            <div className="flex mb-4">
+              <TextField
+                label="Name"
+                name="name"
+                value={formData["name"]}
+                onChange={handleInputChange}
+                className="flex-1 mr-2" />
 
-            <TextField
-              label="Code"
-              name="code"
-              value={formData["code"]}
-              onChange={handleInputChange}
-              className="mb-4" />
+              <TextField
+                label="Code"
+                name="code"
+                value={formData["code"]}
+                onChange={handleInputChange}
+                className="flex-1 ml-2" />
+            </div>
+
+            <Button onClick={submitGroup} className="mb-8">Save</Button>
 
             <AdminGroupMembers          
               members={formData.members}
               setMembers={handleMembersUpdate} />
-
-            <Button onClick={submitGroup}>Save</Button>
           </div>
         </div>
       </AdminPageWrapper>
