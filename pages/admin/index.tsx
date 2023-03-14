@@ -1,17 +1,30 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import Link from 'next/link';
-import AdminPageWrapper from '../../components/AdminPageWrapper';
-import Button from '../../components/Button';
-import LoggedInPageWrapper from '../../components/LoggedInPageWrapper';
-import prisma from "../../lib/prismadb";
+import AdminPageWrapper from 'components/AdminPageWrapper';
+import Button from 'components/Button';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import prisma from "lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
 import Tile from './components/Tile';
 
-export const getServerSideProps = async ({ req, res, query }) => {
+type AdminUsersIndexProps = {
+  users: {
+    total: number;
+    completedSignUp: number;
+    inGroup: number;
+  },
+  groups: {
+    total: number;
+    averageMembers: number;
+    empty: number;
+  }
+}
+
+export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = async ({ req, res, query }) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (session) {
@@ -63,19 +76,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
       destination: '/',
       permanent: true,
     },
-  }
-}
-
-type AdminUsersIndexProps = {
-  users: {
-    total: number;
-    completedSignUp: number;
-    inGroup: number;
-  },
-  groups: {
-    total: number;
-    averageMembers: number;
-    empty: number;
   }
 }
 

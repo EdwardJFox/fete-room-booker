@@ -6,11 +6,11 @@ import { createRouter } from "next-connect";
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 export const handlerOptions = {
-  onError: (err, req, res) => {
-    console.error(err.stack);
+  onError: (err: unknown, req: NextApiRequest, res: NextApiResponse) => {
+    console.error(err);
     res.status(500).json({ error: "Something broke!" });
   },
-  onNoMatch: (req, res) => {
+  onNoMatch: (req: NextApiRequest, res: NextApiResponse) => {
     res.status(404).json({ error: "Page is not found" });
   },
 }

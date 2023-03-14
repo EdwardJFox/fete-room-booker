@@ -8,11 +8,11 @@ import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { buildMeta } from 'services/buildMeta';
 import { IndexMeta } from 'types/meta';
-import AdminPageWrapper from '../../../components/AdminPageWrapper';
-import ButtonLink from '../../../components/Button/ButtonLink';
-import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import { Table, TBody, TH, THead, TR, TD } from '../../../components/Table';
-import prisma from "../../../lib/prismadb";
+import AdminPageWrapper from 'components/AdminPageWrapper';
+import ButtonLink from 'components/Button/ButtonLink';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import { Table, TBody, TH, THead, TR, TD } from 'components/Table';
+import prisma from "lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 

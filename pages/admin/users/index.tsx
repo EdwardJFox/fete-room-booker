@@ -1,22 +1,22 @@
 import { Prisma, User } from '@prisma/client';
-import ListMeta from 'components/ListMeta';
-import Pagination from 'components/Pagination';
-import { IndexMeta } from 'types/meta';
 import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { ReactElement } from 'react';
-import AdminPageWrapper from '../../../components/AdminPageWrapper';
-import ButtonLink from '../../../components/Button/ButtonLink';
-import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import { Table, TBody, TH, THead, TR, TD } from '../../../components/Table';
-import prisma from "../../../lib/prismadb";
+
+import ListMeta from 'components/ListMeta';
+import Pagination from 'components/Pagination';
+import AdminPageWrapper from 'components/AdminPageWrapper';
+import ButtonLink from 'components/Button/ButtonLink';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import NoRecordsFound from 'components/NoRecordsFound';
+import { Table, TBody, TH, THead, TR, TD } from 'components/Table';
+import prisma from "lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 import { useIndexMeta } from 'hooks/useIndexMeta';
 import { buildMeta } from 'services/buildMeta';
-import NoRecordsFound from 'components/NoRecordsFound';
-import { ParsedUrlQuery } from "querystring";
+import { IndexMeta } from 'types/meta';
 
 const PAGINATION = 25;
 
@@ -24,11 +24,6 @@ type AdminUsersIndexProps = {
   users: User[];
   meta: IndexMeta;
 };
-
-interface QueryParams extends ParsedUrlQuery {
-  search?: string;
-  page?: string;
-}
 
 export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = async ({ req, res, query }) => {
   const session = await getServerSession(req, res, authOptions)

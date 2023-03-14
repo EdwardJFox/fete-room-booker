@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { buildURL } from "services/buildUrl";
+import { buildURL } from "services/buildURL";
 import { IndexMeta } from "types/meta";
 
 export const useIndexMeta = (url: string, meta: IndexMeta) => {

@@ -1,21 +1,25 @@
-import { Group, Prisma } from '@prisma/client';
-import type { NextPage } from 'next'
+import { Group } from '@prisma/client';
+import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import Button from '../../components/Button';
-import LoggedInPageWrapper from '../../components/LoggedInPageWrapper';
-import prisma from "../../lib/prismadb";
+import { useState } from 'react';
+import Button from 'components/Button';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import prisma from "lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
 
-export const getServerSideProps = async ({ req, res, query }) => {
+type JoinGroupProps = {
+  group?: Group;
+}
+
+export const getServerSideProps: GetServerSideProps<JoinGroupProps> = async ({ req, res, query }) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (session && query.code) {
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user.email
+        email: session?.user.email as string
       },
       include: {
         groupMember: true
@@ -33,7 +37,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
 
     const group = await prisma.group.findUnique({
       where: {
-        code: query.code
+        code: query.code as string
       }
     })
 
@@ -45,13 +49,11 @@ export const getServerSideProps = async ({ req, res, query }) => {
   }
 
   return {
-    props: {
-    }
+    redirect: {
+      destination: '/',
+      permanent: true,
+    },
   }
-}
-
-type JoinGroupProps = {
-  group: Group;
 }
 
 const JoinGroup: NextPage<JoinGroupProps> = ({ group }) => {

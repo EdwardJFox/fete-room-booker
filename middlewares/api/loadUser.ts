@@ -1,10 +1,21 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from '../../lib/prismadb';
+import prisma from 'lib/prismadb';
+import { Session } from "next-auth";
+import { Prisma } from "@prisma/client";
 
-const loadUser = () => async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+interface Request extends NextApiRequest {
+  session: Session;
+  user: Prisma.UserGetPayload<{
+    include: {
+      groupMember: true
+    }
+  }>;
+}
+
+const loadUser = () => async (req: Request, res: NextApiResponse, next: any) => {
   const user = await prisma.user.findUnique({
     where: {
-      email: req.session.user.email
+      email: req.session.user.email!
     },
     include: {
       groupMember: true

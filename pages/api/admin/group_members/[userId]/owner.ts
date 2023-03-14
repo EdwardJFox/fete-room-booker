@@ -1,12 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
-import checkSession from '../../../../../middlewares/api/checkSession';
-import isAdmin from '../../../../../middlewares/api/isAdmin';
-import loadUser from '../../../../../middlewares/api/loadUser';
+import checkSession from 'middlewares/api/checkSession';
+import isAdmin from 'middlewares/api/isAdmin';
+import loadUser from 'middlewares/api/loadUser';
 import { handlerOptions } from '../../../_default';
-import prisma from "../../../../../lib/prismadb"
+import prisma from "lib/prismadb"
+import { RequestWithUser } from 'types/requests';
 
-const router = createRouter<NextApiRequest, NextApiResponse>();
+const router = createRouter<RequestWithUser, NextApiResponse>();
 
 router
   .use(checkSession())
@@ -16,9 +17,13 @@ router
     const { userId } = req.query;
     const body = JSON.parse(req.body);
 
+    if (!userId) {
+      return res.status(400).json({ message: 'Error' })
+    }
+
     await prisma.groupMember.update({
       where: {
-        userId: parseInt(userId),
+        userId: parseInt(userId as string),
       },
       data: {
         owner: body.owner

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import prisma from '../../../../lib/prismadb';
+import prisma from 'lib/prismadb';
 import { authOptions } from '../../auth/[...nextauth]';
 
 export default async function handler(
@@ -15,7 +15,7 @@ export default async function handler(
 
       const currentUser = await prisma.user.findUnique({
         where: {
-          email: session.user.email
+          email: session.user.email as string
         },
         include: {
           groupMember: true
@@ -32,9 +32,12 @@ export default async function handler(
       })
 
       if (
+        // Slightly messy, but no harm in being super explicit in a remove endpoint
         currentUser &&
+        currentUser.groupMember &&
         currentUser.groupMember.owner && 
-        userToRemove && 
+        userToRemove &&
+        userToRemove.groupMember &&
         !userToRemove.groupMember.owner &&
         userToRemove.groupMember.groupId === currentUser.groupMember.groupId) {
         await prisma.groupMember.delete({

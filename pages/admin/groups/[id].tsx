@@ -1,20 +1,37 @@
 import { Prisma } from '@prisma/client';
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import AdminPageWrapper from '../../../components/AdminPageWrapper';
-import Button from '../../../components/Button';
-import TextField from '../../../components/form/TextField';
-import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import prisma from "../../../lib/prismadb";
+import AdminPageWrapper from 'components/AdminPageWrapper';
+import Button from 'components/Button';
+import TextField from 'components/form/TextField';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import prisma from "lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 import AdminGroupMembers from './components/AdminGroupMembers';
 
-export const getServerSideProps = async ({ req, res, query }) => {
+type AdminGroupsEditProps = {
+  group: Prisma.GroupGetPayload<{
+    include: {
+      members: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+              image: true
+            }
+          }
+        }
+      }
+    }
+  }>;
+}
+
+export const getServerSideProps: GetServerSideProps<AdminGroupsEditProps> = async ({ req, res, query }) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (session) {
@@ -57,27 +74,13 @@ export const getServerSideProps = async ({ req, res, query }) => {
   }
 }
 
-type AdminGroupsEditProps = {
-  group: Prisma.GroupGetPayload<{
-    include: {
-      members: {
-        include: {
-          user: {
-            select: {
-              name: true,
-              email: true,
-              image: true
-            }
-          }
-        }
-      }
-    }
-  }>;
-}
-
 const AdminGroupsEdit: NextPage<AdminGroupsEditProps> = ({ group }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState(group);
+  const [formData, setFormData] = useState({
+    name: group.name,
+    members: group.members,
+    code: group.code,
+  });
 
   const submitGroup = () => {
     fetch(`/api/admin/groups/${group.id}`, {
@@ -93,10 +96,8 @@ const AdminGroupsEdit: NextPage<AdminGroupsEditProps> = ({ group }) => {
     })
   }
 
-  const handleInputChange = (value: any, name: string) => {
-    const newValues = { ...formData };
-    newValues[name] = value;
-    setFormData(newValues);
+  const handleInputChange = (value: string, field: string) => {
+    setFormData({ ...formData, [field]: value });
   }
 
   const handleMembersUpdate = (members: any) => {
@@ -133,7 +134,8 @@ const AdminGroupsEdit: NextPage<AdminGroupsEditProps> = ({ group }) => {
                 name="name"
                 value={formData["name"]}
                 onChange={handleInputChange}
-                className="flex-1 mr-2" />
+                className="flex-1 mr-2"
+                max={30} />
 
               <TextField
                 label="Code"

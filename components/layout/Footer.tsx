@@ -1,7 +1,10 @@
 const Footer = () => {
   return (
-    <footer className="bg-secondary-800 py-4 px-4">
-      <p className="text-white">Footer</p>
+    <footer className="flex justify-between bg-secondary-800 py-4 px-4">
+      <p className="text-white">Team Fete</p>
+      <p className="text-white">
+        made by <a href="https://twitter.com/icemaz" className="underline">icemaz</a>
+      </p>
     </footer>
   )
 }

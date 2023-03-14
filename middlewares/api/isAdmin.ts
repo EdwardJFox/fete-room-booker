@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiResponse } from "next";
+import { RequestWithUser } from "types/requests";
 
-const isAdmin = () => (req: NextApiRequest, res: NextApiResponse, next: any) => {
+const isAdmin = () => (req: RequestWithUser, res: NextApiResponse, next: any) => {
   if (req.user.admin) {
     return next();
   } else {

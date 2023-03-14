@@ -14,7 +14,7 @@ export default async function handler(
 
       const user = await prisma.user.findUnique({
         where: {
-          email: session.user.email
+          email: session.user.email as string
         }
       })
 
@@ -43,7 +43,7 @@ export default async function handler(
         } else {
           preferences = await prisma.preference.update({
             where: {
-              userId: parseInt(user.id),
+              userId: user.id,
             },
             data: {
               typeOfRoom: body.userPreferences.typeOfRoom,

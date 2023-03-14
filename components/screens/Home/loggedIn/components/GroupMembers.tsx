@@ -3,7 +3,7 @@ import { faCheckCircle, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { Prisma } from "@prisma/client";
 import { useState } from "react";
 
-import useCopyToClipboard from "../../../../../hooks/useCopyToClipboard";
+import useCopyToClipboard from "hooks/useCopyToClipboard";
 import GroupMemberRow from "./GroupMemberRow";
 
 type GroupMembersProps = {

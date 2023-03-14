@@ -3,13 +3,13 @@ import prisma from "../lib/prismadb"
 import { getParticipants } from "./startgg/getParticipants";
 
 const getAllParticipants = async () => {
-  const initialData = await getParticipants(process.env.START_GG_TOURNAMENT, 1, 10)
+  const initialData = await getParticipants(process.env.START_GG_TOURNAMENT!, 1, 10)
   const totalPages = Math.ceil(initialData.data.tournament.participants.pageInfo.total / 100);
 
   let allParticipants = initialData.data.tournament.participants.nodes
 
   for(let i = 1; i < totalPages; i++) {
-    const data = await getParticipants(process.env.START_GG_TOURNAMENT, i, 10)
+    const data = await getParticipants(process.env.START_GG_TOURNAMENT!, i, 10)
     allParticipants = [...allParticipants, ...data.data.tournament.participants.nodes]
   }
 
@@ -19,7 +19,7 @@ const getAllParticipants = async () => {
 export const createAccounts = async () => {
   const allParticipants = await getAllParticipants();
 
-  allParticipants.forEach(async (participant) => {
+  allParticipants.forEach(async (participant: any) => {
     if (participant.email) {
       const existingUser = await prisma.user.findUnique({
         where: {

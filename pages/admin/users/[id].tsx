@@ -1,29 +1,36 @@
 import { Prisma } from '@prisma/client';
 import { format, parseISO } from 'date-fns'
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import AdminPageWrapper from '../../../components/AdminPageWrapper';
-import Button from '../../../components/Button';
-import CheckBox from '../../../components/form/CheckBox';
-import TextField from '../../../components/form/TextField';
-import InfoMessage from '../../../components/InfoMessage';
-import LoggedInPageWrapper from '../../../components/LoggedInPageWrapper';
-import UserPreferencesView from '../../../components/UserPreferences/View';
-import prisma from "../../../lib/prismadb";
+import AdminPageWrapper from 'components/AdminPageWrapper';
+import Button from 'components/Button';
+import CheckBox from 'components/form/CheckBox';
+import TextField from 'components/form/TextField';
+import InfoMessage from 'components/InfoMessage';
+import LoggedInPageWrapper from 'components/LoggedInPageWrapper';
+import UserPreferencesView from 'components/UserPreferences/View';
+import prisma from "lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 
-export const getServerSideProps = async ({ req, res, query }) => {
+type AdminUsersEditProps = {
+  user: Prisma.UserGetPayload<{
+    include: {
+      preferences: true
+    }
+  }>;
+}
+
+export const getServerSideProps: GetServerSideProps<AdminUsersEditProps> = async ({ req, res, query }) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(query.id)
+        id: parseInt(query.id as string)
       },
       include: {
         preferences: true
@@ -43,14 +50,6 @@ export const getServerSideProps = async ({ req, res, query }) => {
       permanent: true,
     },
   }
-}
-
-type AdminUsersEditProps = {
-  user: Prisma.UserGetPayload<{
-    include: {
-      preferences: true
-    }
-  }>;
 }
 
 const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
@@ -76,22 +75,8 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
     })
   }
 
-  // const removeUser = () => {
-  //   if (confirm("Please confirm you want to remove this user from the system")) {
-  //     fetch(`/api/admin/users/${user.id}`, {
-  //       method: "DELETE"
-  //     }).then((res) => {
-  //       if (res.status === 200) {
-  //         router.push("/admin/users")
-  //       }
-  //     })
-  //   }
-  // }
-
   const handleInputChange = (value: string | boolean, field: string) => {
-    const newValues = { ...formData };
-    newValues[field] = value;
-    setFormData(newValues);
+    setFormData({ ...formData, [field]: value });
   }
 
   return (
@@ -120,13 +105,13 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
             <TextField
               label="Name/Tag"
               name="name"
-              value={formData["name"]}
+              value={formData["name"] || ""}
               onChange={handleInputChange}
               className="w-72" />
             
             <p className="mt-2 mb-1"><b>Email:</b> { user.email }</p>
-            <p className="my-1"><b>Email invite sent at:</b> { user.sentInviteEmailAt ? format(parseISO(user.sentInviteEmailAt), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
-            <p className="my-1"><b>Email verified at:</b> { user.emailVerified ? format(parseISO(user.emailVerified), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
+            <p className="my-1"><b>Email invite sent at:</b> { user.sentInviteEmailAt ? format(parseISO(user.sentInviteEmailAt as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
+            <p className="my-1"><b>Email verified at:</b> { user.emailVerified ? format(parseISO(user.emailVerified as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
 
             <div className="my-3">
               <CheckBox

@@ -1,20 +1,36 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
-import prisma from "../lib/prismadb";
+import prisma from "lib/prismadb";
 import { authOptions } from './api/auth/[...nextauth]'
-import HomeLoggedOutScreen from '../components/screens/Home/loggedOut';
-import LoggedInWithGroupScreen from '../components/screens/Home/loggedIn/WithGroup';
-import LoggedInNoGroupScreen from '../components/screens/Home/loggedIn/NoGroup';
+import HomeLoggedOutScreen from 'components/screens/Home/loggedOut';
+import LoggedInWithGroupScreen from 'components/screens/Home/loggedIn/WithGroup';
+import LoggedInNoGroupScreen from 'components/screens/Home/loggedIn/NoGroup';
 import { Prisma } from '@prisma/client';
 
-export const getServerSideProps = async ({ req, res }) => {
+type HomeProps = {
+  loggedIn: boolean;
+  user?: Prisma.UserGetPayload<{
+    include: { groupMember: { include: { group: true } }, preferences: true }
+  }>;
+  group?: Prisma.GroupGetPayload<{
+    include: {
+      members: {
+        include: {
+          user: true
+        }
+      }
+    }
+  }>;
+}
+
+export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ req, res }) => {
   const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user.email
+        email: session?.user.email as string
       },
       include: {
         groupMember: {
@@ -37,13 +53,13 @@ export const getServerSideProps = async ({ req, res }) => {
           members: {
             orderBy: [
               {
-                owner: 'desc',
+                owner: Prisma.SortOrder.desc,
               },
               {
-                approved: 'asc'
+                approved: Prisma.SortOrder.asc,
               },
               {
-                userId: 'asc'
+                userId: Prisma.SortOrder.asc,
               }
             ],
             include: {
@@ -86,22 +102,6 @@ export const getServerSideProps = async ({ req, res }) => {
   }
 }
 
-type HomeProps = {
-  loggedIn: boolean;
-  user: Prisma.UserGetPayload<{
-    include: { groupMember: { include: { group: true } }, preferences: true }
-  }>;
-  group: Prisma.GroupGetPayload<{
-    include: {
-      members: {
-        include: {
-          user: true
-        }
-      }
-    }
-  }>;
-}
-
 const Home: NextPage<HomeProps> = ({ loggedIn, user, group }) => {
   return (
     <>
@@ -109,9 +109,9 @@ const Home: NextPage<HomeProps> = ({ loggedIn, user, group }) => {
         <title>Fete 3 - Accommodation Organiser</title>
       </Head>
 
-      { loggedIn ?
+      { loggedIn && user ?
         user.groupMember ?
-          <LoggedInWithGroupScreen user={user} group={group} />
+          <LoggedInWithGroupScreen user={user} group={group!} />
           :
           <LoggedInNoGroupScreen user={user} />
         :

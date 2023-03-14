@@ -1,10 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Button from "../../../../components/Button";
-import TextField from "../../../../components/form/TextField";
-import InfoMessage from "../../../../components/InfoMessage";
-import { Table, THead, TBody, TR, TH, TD } from "../../../../components/Table";
+import Button from "components/Button";
+import TextField from "components/form/TextField";
+import InfoMessage from "components/InfoMessage";
+import { Table, THead, TBody, TR, TH, TD } from "components/Table";
 
 type Member = Prisma.GroupMemberGetPayload<{
   include: {
@@ -121,9 +121,9 @@ const AdminGroupMembers = ({ members, setMembers }: AdminGroupMembersProps) => {
                 <TD>{ member.user.email }</TD>
                 <TD>{ member.approved ? "Yes" : "No" }</TD>
                 <TD>{ member.owner ? "Yes" : "No" }</TD>
-                <TD>
+                <TD className="text-right">
                   { !member.approved && <Button size="sm" style="success" className="mr-2" onClick={() => approveGroupMember(index, member)}>Approve</Button> }
-                  <Button size="sm" className="mr-2" onClick={() => toggleOwner(index, member)}>{ member.owner ? "Remove owner" : "Make owner" }</Button>
+                  { member.approved && <Button size="sm" className="mr-2" onClick={() => toggleOwner(index, member)}>{ member.owner ? "Remove owner" : "Make owner" }</Button> }
                   <Button size="sm" style="danger" onClick={() => removeGroupMember(index, member)}>Remove</Button>
                 </TD>
               </TR>
