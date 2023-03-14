@@ -15,7 +15,7 @@ type LoggedInNoGroupScreenProps = {
 
 const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
   const router = useRouter()
-  const [code, setCode] = useState(router.query.code || "");
+  const [code, setCode] = useState(router.query.code as string || "");
   const [groupName, setGroupName] = useState("");
   const [error, setError] = useState<null | string>();
 
@@ -75,8 +75,14 @@ const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
             label="Group Name (Max 30 characters)"
             name="groupName"
             onChange={(value) => setGroupName(value)}
-            max={30} />
-          <Button className="flex-initial w-full mt-2 md:ml-3 md:mt- md:w-auto" onClick={submitNewGroup}>Create new group</Button>
+            max={32} />
+          <Button
+            className="flex-initial w-full mt-2 md:ml-3 md:mt- md:w-auto"
+            onClick={submitNewGroup}
+            disabled={groupName.length === 0}
+          >
+            Create new group
+          </Button>
         </div>
         { error && <p>{ error }</p>}
       </div>

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from '../../lib/prismadb';
 
-const loadUser = () => async (req: NextApiRequest, res: NextApiResponse, next) => {
+const loadUser = () => async (req: NextApiRequest, res: NextApiResponse, next: any) => {
   const user = await prisma.user.findUnique({
     where: {
       email: req.session.user.email

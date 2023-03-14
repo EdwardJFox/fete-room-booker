@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import prisma from "../lib/prismadb";
 import { authOptions } from './api/auth/[...nextauth]'
@@ -9,7 +9,7 @@ import LoggedInNoGroupScreen from '../components/screens/Home/loggedIn/NoGroup';
 import { Prisma } from '@prisma/client';
 
 export const getServerSideProps = async ({ req, res }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const user = await prisma.user.findUnique({
@@ -28,7 +28,7 @@ export const getServerSideProps = async ({ req, res }) => {
 
     let group;
 
-    if (user.groupMember) {
+    if (user && user.groupMember) {
       // Don't want to include group members 
       const memberWhere = user?.groupMember.owner ? {} : { approved: true }
       // Only get the full group info if we're an approved member
@@ -41,6 +41,9 @@ export const getServerSideProps = async ({ req, res }) => {
               },
               {
                 approved: 'asc'
+              },
+              {
+                userId: 'asc'
               }
             ],
             include: {

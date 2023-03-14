@@ -15,7 +15,7 @@ async function main() {
     }
   });
 
-  const users = await Promise.all(Array.from({ length: 500 }).map(async () => {
+  const users = await Promise.all(Array.from({ length: 1000 }).map(async () => {
     const emailVerified = faker.helpers.maybe(() => faker.date.between('2023-02-01T00:00:00.000Z', new Date()), { probability: 0.7 });
 
     const preferences = emailVerified ? 
@@ -56,7 +56,7 @@ async function main() {
   }));
 
   // Seed some groups
-  const groups = await Promise.all(Array.from({ length: 100 }).map(async (_, index) => {
+  const groups = await Promise.all(Array.from({ length: 50 }).map(async (_, index) => {
     const startingIndex = index * 10;
 
     return prisma.group.create({

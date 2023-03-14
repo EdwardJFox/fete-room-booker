@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { unstable_getServerSession } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import prisma from '../../../lib/prismadb';
 import { authOptions } from '../auth/[...nextauth]';
 
@@ -8,15 +8,25 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   if (req.method === 'POST') {
-    const session = await unstable_getServerSession(req, res, authOptions)
+    const session = await getServerSession(req, res, authOptions)
     if (session) {
       const body = JSON.parse(req.body)
+
+      if (body.groupName.length > 30) {
+        return res.status(401).json({
+          error: "Group name too long"
+        });
+      } else if (!body.groupName || body.groupName === "") {
+        return res.status(401).json({
+          error: "Group name missing"
+        });
+      }
 
       const user = await prisma.user.findUnique({
         where: {
           email: session.user.email
         }
-      })
+      });
 
       if (user) {
         const code = Math.random().toString(36).substr(2, 7);
@@ -47,21 +57,21 @@ export default async function handler(
               }
             }
           }
-        })
+        });
 
         res.status(200).json({
           group
-        })
+        });
       } else {
         res.status(404).json({
           error: "User not found"
-        })
+        });
       }
     } else {
       res.status(401).json({
         error: "Not signed in"
-      })
+      });
     }
-    res.end()
+    res.end();
   }
 }

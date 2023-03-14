@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { authOptions } from "../../pages/api/auth/[...nextauth]";
 
-const checkSession = () => async (req: NextApiRequest, res: NextApiResponse, next) => {
-  const session = await unstable_getServerSession(req, res, authOptions);
+const checkSession = () => async (req: NextApiRequest, res: NextApiResponse, next: any) => {
+  const session = await getServerSession(req, res, authOptions);
 
   if (session) {
     req.session = session;

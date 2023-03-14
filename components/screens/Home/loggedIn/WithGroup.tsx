@@ -17,7 +17,7 @@ type LoggedInWithGroupScreenProps = {
       members: {
         include: {
           user: true
-        }
+        },
       }
     }
   }>

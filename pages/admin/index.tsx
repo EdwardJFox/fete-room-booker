@@ -1,7 +1,7 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import Link from 'next/link';
 import AdminPageWrapper from '../../components/AdminPageWrapper';
@@ -12,7 +12,7 @@ import { authOptions } from '../api/auth/[...nextauth]';
 import Tile from './components/Tile';
 
 export const getServerSideProps = async ({ req, res, query }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const totalUsers = await prisma.user.aggregate({
@@ -58,7 +58,12 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  return {}
+  return {
+    redirect: {
+      destination: '/',
+      permanent: true,
+    },
+  }
 }
 
 type AdminUsersIndexProps = {

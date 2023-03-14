@@ -62,7 +62,7 @@ const GroupMembers = ({ isOwner, members, groupId, loggedInUserId, code }: Group
           }
         </button>
       </div>
-      { members.map((member) =>
+      { currentMembers.map((member) =>
         <GroupMemberRow
           key={member.userId}
           member={member}

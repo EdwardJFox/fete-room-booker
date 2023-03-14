@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { format, parseISO } from 'date-fns'
 import type { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,7 +18,7 @@ import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 
 export const getServerSideProps = async ({ req, res, query }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const user = await prisma.user.findUnique({
@@ -37,7 +37,12 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  return { props: {} }
+  return {
+    redirect: {
+      destination: '/',
+      permanent: true,
+    },
+  }
 }
 
 type AdminUsersEditProps = {

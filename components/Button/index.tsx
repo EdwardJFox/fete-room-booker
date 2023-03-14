@@ -10,6 +10,7 @@ export type ButtonProps = {
   className?: string;
   size?: ButtonSize;
   style?: ButtonStyle;
+  disabled?: boolean;
 }
 
 export const sizeFn = (size: 'default' | 'sm' | undefined) => {
@@ -26,12 +27,21 @@ export const buttonStyles = {
   success: 'bg-green-300 hover:bg-green-400 text-primary-900',
 }
 
-const Button = ({ type="button", onClick, children, className, size, style="default" }: ButtonProps) => {
+const Button = ({
+  type="button",
+  onClick,
+  children,
+  className,
+  size,
+  style="default",
+  disabled=false
+}: ButtonProps) => {
   return (
     <button
-      className={`${buttonStyles[style]} rounded-md ${sizeFn(size)} ${className}`}
+      className={`${buttonStyles[style]} rounded-md ${sizeFn(size)} ${className} disabled:opacity-70 disabled:pointer-events-none`}
       type={type}
-      onClick={onClick}>
+      onClick={onClick}
+      disabled={disabled}>
       { children }
     </button>
   )

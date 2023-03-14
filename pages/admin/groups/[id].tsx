@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import type { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,12 +15,12 @@ import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
 import AdminGroupMembers from './components/AdminGroupMembers';
 
 export const getServerSideProps = async ({ req, res, query }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (session) {
     const group = await prisma.group.findUnique({
       where: {
-        id: parseInt(query.id)
+        id: parseInt(query.id as string)
       },
       include: {
         members: {
@@ -49,7 +49,12 @@ export const getServerSideProps = async ({ req, res, query }) => {
     }
   }
 
-  return {}
+  return {
+    redirect: {
+      destination: '/',
+      permanent: true,
+    },
+  }
 }
 
 type AdminGroupsEditProps = {

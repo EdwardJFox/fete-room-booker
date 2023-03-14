@@ -1,6 +1,6 @@
 import { Group, Prisma } from '@prisma/client';
 import type { NextPage } from 'next'
-import { unstable_getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth'
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import prisma from "../../lib/prismadb";
 import { authOptions } from '../api/auth/[...nextauth]';
 
 export const getServerSideProps = async ({ req, res, query }) => {
-  const session = await unstable_getServerSession(req, res, authOptions)
+  const session = await getServerSession(req, res, authOptions)
 
   if (session && query.code) {
     const user = await prisma.user.findUnique({
