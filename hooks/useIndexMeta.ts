@@ -9,7 +9,7 @@ export const useIndexMeta = (url: string, meta: IndexMeta) => {
   };
 
   const handleSearchChange = (search: string) => {
-    router.replace(buildURL(url, { page: meta.pagination.page.toString(), search }));
+    router.replace(buildURL(url, { page: "1", search }));
   }
 
   return {
