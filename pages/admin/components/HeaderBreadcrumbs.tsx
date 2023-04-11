@@ -12,7 +12,7 @@ type HeaderBreadcrumbsProps = {
 const HeaderBreadcrumbs = ({ pages }: HeaderBreadcrumbsProps) => {
   return (
     <div className="flex mt-4 mb-4">
-      {pages.map((page, index) => 
+      {pages?.map((page, index) => 
         <div className="flex-initial flex items-center" key={page.href}>
           <Link href={page.href}>
             <h1>{ page.title }</h1>

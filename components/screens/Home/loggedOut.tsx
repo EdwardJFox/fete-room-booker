@@ -11,9 +11,9 @@ const HomeLoggedOutScreen = () => {
   const [error, setError] = useState<null | string>(null);
   const [success, setSuccess] = useState(false);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: any) => {
     e.preventDefault();
-    signIn("email", { email, redirect: false }).then(({ ok, error: err }) => {
+    signIn("email", { email, redirect: false }).then(({ ok, error: err }: any) => {
       if (!err) {
         setSuccess(true)
       } else {
@@ -37,7 +37,7 @@ const HomeLoggedOutScreen = () => {
 
       <div className="m-4 p-6 bg-secondary-600 rounded-md max-w-md sm:mx-auto">
         <h2 className="mb-4">Sign in</h2>
-        <p className="text-sm leading-7">This is for users signed up with accommodation for Fete 3, to organise groups into rooms. If you haven't registered for the event yet, go <a href="https://fete.gg/" className="underline">here</a> to sign up, and come back when you have received your room booking email!</p>
+        <p className="text-sm leading-7">This is for users signed up with accommodation for Fete 3, to organise groups into rooms. If you haven&apos;t registered for the event yet, go <a href="https://fete.gg/" className="underline">here</a> to sign up, and come back when you have received your room booking email!</p>
         
         <form onSubmit={onFormSubmit}>
           <TextField

@@ -103,7 +103,7 @@ const AdminGroupMembers = ({ members, setMembers }: AdminGroupMembersProps) => {
   return (
     <>
       <h3 className="text-2xl">Group Members</h3>
-      { members.length > 0 ?
+      { members?.length > 0 ?
         <Table className="text-white mt-3 mb-5">
           <THead>
             <TR>
