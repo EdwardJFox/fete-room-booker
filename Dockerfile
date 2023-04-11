@@ -22,11 +22,14 @@ RUN npm install
 
 RUN npx prisma generate
 
+RUN npx prisma migrate production
+
 # Copy the rest of our Next.js folder into /app
 COPY . /app
 
 # Ensure port 3000 is accessible to our system
 EXPOSE 3000
 
-# Run yarn dev, as we would via the command line 
-CMD ["npm", "run", "dev"]
+RUN npm run build
+
+CMD ["npm", "run", "start"]
