@@ -22,7 +22,7 @@ RUN npm install
 
 RUN npx prisma generate
 
-RUN npx prisma migrate production
+RUN npx prisma migrate deploy
 
 # Copy the rest of our Next.js folder into /app
 COPY . /app
