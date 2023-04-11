@@ -1,4 +1,5 @@
 # Dockerfile
+ARG DATABASE_URL
 
 # Use node alpine as it's a small node image
 FROM --platform=linux/amd64 node:16-alpine
