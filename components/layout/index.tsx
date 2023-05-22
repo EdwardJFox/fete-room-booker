@@ -1,4 +1,4 @@
-import { Atkinson_Hyperlegible, Poppins } from '@next/font/google'
+import { Atkinson_Hyperlegible, Poppins } from "next/font/google"
 import { ReactNode } from "react"
 import Header from "./Header"
 import Main from "./Main"
