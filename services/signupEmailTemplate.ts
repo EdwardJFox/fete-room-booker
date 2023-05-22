@@ -11,7 +11,7 @@ export const signupEmailTemplate = (url: string) => `
       <td align="center" style="border-radius: 8px; padding: 24px 16px; text-align: center;" bgcolor="#293240">
         <p style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #fff; line-height: 160%; margin-top: 0px;">You can now organise your accommodation for Fete 3. Create or join a group, and set your preferences by clicking the button below and signing in with your email.</p>
         <a
-          href="${url}"
+          href="https://room.fete.gg"
           target="_blank"
           style="background: #F5BC92; font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #321805; text-decoration: none; border-radius: 4px; padding: 10px 20px; display: inline-block; font-weight: bold;">
           Check it out

@@ -53,10 +53,9 @@ export const createAccounts = async () => {
 
           if (newUser) {
             sendEmail(
-              // participant.email,
-              "edwardjfox@outlook.com",
-              "Room Booking now available",
-              "Room booking is now available!",
+              participant.email,
+              "Fete 3 Room Booking now open",
+              "Fete 3 Room booking is now available!",
               signupEmailTemplate(process.env.NEXTAUTH_URL!),
             )
             await prisma.userImportLog.create({
