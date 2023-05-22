@@ -9,7 +9,7 @@ export const signupEmailTemplate = (url: string) => `
     </tr>
     <tr>
       <td align="center" style="border-radius: 8px; padding: 24px 16px; text-align: center;" bgcolor="#293240">
-        <p style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #fff; line-height: 160%;">You can now organise your accommodation for Fete 3. Create or join a group, and set your preferences by clicking the button below and signing in with your email.</p>
+        <p style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #fff; line-height: 160%; margin-top: 0px;">You can now organise your accommodation for Fete 3. Create or join a group, and set your preferences by clicking the button below and signing in with your email.</p>
         <a
           href="${url}"
           target="_blank"

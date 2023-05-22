@@ -9,7 +9,7 @@ export const loginEmailTemplate = (url: string) => `
     </tr>
     <tr>
       <td align="center" style="border-radius: 8px; padding: 24px 16px; text-align: center;" bgcolor="#293240">
-        <p style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #fff; line-height: 160%;">A login attempt to room.fete.gg was requested for this email. Click the button below to sign in.</p>
+        <p style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: #fff; line-height: 160%; margin-top: 0px;">A login attempt to room.fete.gg was requested for this email. Click the button below to sign in.</p>
         <a
           href="${url}"
           target="_blank"
