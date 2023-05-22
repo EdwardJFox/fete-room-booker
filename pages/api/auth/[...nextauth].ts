@@ -9,7 +9,7 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
-      ...emailProviderOptions(),
+      server: emailProviderOptions(),
       sendVerificationRequest: ({ 
         identifier: email,
         url,

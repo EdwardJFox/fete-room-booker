@@ -5,14 +5,12 @@ if (process.env.NODE_ENV !== 'production') process.env.NODE_TLS_REJECT_UNAUTHORI
 export const emailProviderOptions = (): Record<string, unknown> => {
   if (process.env.NODE_ENV === "production") {
     return {
-      server: {
-        host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
-        auth: {
-          user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD
-        }
-      },
+      host: process.env.EMAIL_SERVER_HOST,
+      port: process.env.EMAIL_SERVER_PORT,
+      auth: {
+        user: process.env.EMAIL_SERVER_USER,
+        pass: process.env.EMAIL_SERVER_PASSWORD
+      }
     }
   } else {
     return {
