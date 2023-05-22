@@ -53,7 +53,7 @@ const HomeLoggedOutScreen = () => {
           { error && <p className="my-3">Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
 
           { success ? 
-            <InfoMessage style="success" className="mt-4">An email has been sent to you with a magic link</InfoMessage>
+            <InfoMessage style="success" className="mt-4">An email has been sent to you with a magic link. Please check your inbox and junk folder.</InfoMessage>
             :
             <div className="sm:text-right">
               <Button type="submit" className="w-full mt-4">Sign in with email</Button>
