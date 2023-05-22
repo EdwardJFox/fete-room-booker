@@ -2,12 +2,27 @@ import NextAuth, { NextAuthOptions, User } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "lib/prismadb"
 import EmailProvider from "next-auth/providers/email";
-import { emailProviderOptions } from "lib/email";
+import { emailProviderOptions, sendEmail } from "lib/email";
+import { loginEmailTemplate } from "services/loginEmailTemplate";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    EmailProvider(emailProviderOptions())
+    EmailProvider({
+      ...emailProviderOptions(),
+      sendVerificationRequest: ({ 
+        identifier: email,
+        url,
+      }: { url: string, identifier: string }) => {
+        sendEmail(
+          // participant.email,
+          email,
+          "Sign in to room.fete.gg",
+          "Sign in to room.fete.gg",
+          loginEmailTemplate(url!),
+        )
+      }
+    })
   ],
   pages: {
     signIn: '/',

@@ -17,7 +17,6 @@ const HomeLoggedOutScreen = () => {
       if (!err) {
         setSuccess(true)
       } else {
-        console.log(error)
         setError(err)
       }
     });
@@ -48,15 +47,16 @@ const HomeLoggedOutScreen = () => {
             required
             autoFocus
             placeholder="Email address used on Start.gg"
+            className="mt-2"
           />
 
-          { error && <p>Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
+          { error && <p className="my-3">Could not log you in. Ensure you are signed up on the Start.gg page, and that you have received your Room booking email.</p>}
 
           { success ? 
-            <InfoMessage style="success" className="mt-2">An email has been sent to you with a magic link</InfoMessage>
+            <InfoMessage style="success" className="mt-4">An email has been sent to you with a magic link</InfoMessage>
             :
             <div className="sm:text-right">
-              <Button type="submit" className="w-full mt-2">Sign in with email</Button>
+              <Button type="submit" className="w-full mt-4">Sign in with email</Button>
             </div>
           }
         </form>

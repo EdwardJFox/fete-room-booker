@@ -102,3 +102,35 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+enum ImportLogStatus {
+  IN_PROGRESS
+  COMPLETE
+  ERROR
+}
+
+model ImportLog {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  status          ImportLogStatus
+  content         Json
+  numberOfRecords Int
+  userImportLogs  UserImportLog[]
+}
+
+enum UserImportLogStatus {
+  NEW
+  SKIP
+  ERROR
+  NO_EMAIL
+}
+
+model UserImportLog {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String?
+  status      UserImportLogStatus
+  message     String?
+  importLogId Int
+  importLog   ImportLog @relation(fields: [importLogId], references: [id])
+}
