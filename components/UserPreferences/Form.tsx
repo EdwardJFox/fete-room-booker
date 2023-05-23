@@ -62,7 +62,7 @@ const UserPreferencesForm = ({ preferences }: UserPreferencesFormProps) => {
           checked={userPreferences["typeOfRoom"] === "PARTY"}
           onChange={handleInputChange} />
       </div>
-      <div className="mb-3">
+      {/* <div className="mb-3">
         <p className="text-sm">Dietary Requirements</p>
         <Radio
           label="None"
@@ -82,7 +82,7 @@ const UserPreferencesForm = ({ preferences }: UserPreferencesFormProps) => {
           value="VEGAN"
           checked={userPreferences["dietary"] === "VEGAN"}
           onChange={handleInputChange} />
-      </div>
+      </div> */}
       <TextArea
         className="mb-4"
         label="Other comments"
