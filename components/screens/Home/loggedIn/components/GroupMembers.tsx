@@ -22,7 +22,7 @@ const GroupMembers = ({ isOwner, members, groupId, loggedInUserId, code }: Group
   const [currentMembers, setCurrentMembers] = useState(members);
   const [value, copy] = useCopyToClipboard()
 
-  const url = `${process.env.NEXT_PUBLIC_SITE_BASE_PATH}/groups/${code}`;
+  const url = `https://room.fete.gg/groups/${code}`;
   
   const handleRemove = (userId: number) => {
     fetch(`/api/groups/${groupId}/remove`, {
