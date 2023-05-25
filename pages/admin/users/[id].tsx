@@ -15,11 +15,17 @@ import UserPreferencesView from 'components/UserPreferences/View';
 import prisma from "lib/prismadb";
 import { authOptions } from '../../api/auth/[...nextauth]';
 import HeaderBreadcrumbs from '../components/HeaderBreadcrumbs';
+import ButtonLink from 'components/Button/ButtonLink';
 
 type AdminUsersEditProps = {
   user: Prisma.UserGetPayload<{
     include: {
-      preferences: true
+      preferences: true,
+      groupMember: {
+        include: {
+          group: true
+        }
+      }
     }
   }>;
 }
@@ -33,7 +39,12 @@ export const getServerSideProps: GetServerSideProps<AdminUsersEditProps> = async
         id: parseInt(query.id as string)
       },
       include: {
-        preferences: true
+        preferences: true,
+        groupMember: {
+          include: {
+            group: true
+          }
+        }
       }
     })
 
@@ -126,6 +137,18 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
 
             { error && <InfoMessage style="danger" className="mt-3">{ error }</InfoMessage>}
           </div>
+
+          <div className="my-4 px-6 py-5 bg-secondary-600 rounded-md">
+            { user.groupMember ? 
+              <>
+                <h2 className="text-xl font-semibold mb-4">Group: { user.groupMember.group.name }</h2>
+                <ButtonLink href={`/admin/groups/${ user.groupMember.group.id }`}>View Group</ButtonLink>
+              </>
+              :
+              <h2>User not part of group</h2>
+            }
+          </div>
+
           <UserPreferencesView preferences={user.preferences} />
         </div>
 

@@ -15,7 +15,6 @@ export const authOptions: NextAuthOptions = {
         url,
       }: { url: string, identifier: string }) => {
         sendEmail(
-          // participant.email,
           email,
           "Sign in to room.fete.gg",
           "Sign in to room.fete.gg",

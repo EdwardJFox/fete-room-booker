@@ -50,9 +50,9 @@ export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = asyn
       _count: true,
     });
 
-    const emptyGroups = await prisma.user.aggregate({
+    const emptyGroups = await prisma.group.aggregate({
       _count: true,
-      where: { groupMember: { is: null } },
+      where: { members: { none: {} } },
     });
 
     return {
