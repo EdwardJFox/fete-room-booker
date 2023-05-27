@@ -10,4 +10,4 @@ jobs:
         run: |
           curl --request POST \
           --url 'https://room.fete.gg/api/update_participants' \
-          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
+          --header 'authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
