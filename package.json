@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
     "seed-travel": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/locations_seed.ts"
   },
   "dependencies": {

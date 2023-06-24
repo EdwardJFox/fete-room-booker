@@ -1,12 +1,12 @@
 # Dockerfile
 
-# ENV from Railway
-ARG DATABASE_URL
 
 # Use node alpine as it's a small node image
 FROM --platform=linux/amd64 node:16-alpine
 
-RUN bash -c 'echo -e "$DATABASE_URL"'
+# ENV from Railway
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 # Create the directory on the node image 
 # where our Next.js app will live
@@ -27,10 +27,10 @@ RUN npm install
 
 RUN npx prisma generate
 
+RUN npx prisma migrate deploy
+
 # Copy the rest of our Next.js folder into /app
 COPY . /app
-
-RUN npx prisma migrate deploy
 
 # Ensure port 3000 is accessible to our system
 EXPOSE 3000
