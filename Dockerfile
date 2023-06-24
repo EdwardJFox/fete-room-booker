@@ -6,6 +6,8 @@ ARG DATABASE_URL
 # Use node alpine as it's a small node image
 FROM --platform=linux/amd64 node:16-alpine
 
+RUN bash -c 'echo -e "$DATABASE_URL"'
+
 # Create the directory on the node image 
 # where our Next.js app will live
 RUN mkdir -p /app
