@@ -4,11 +4,18 @@ import { useState } from "react";
 import Button from "../../../Button";
 import TextField from "../../../form/TextField";
 import UserPreferencesForm from "../../../UserPreferences/Form";
+import TravelInfo from "components/TravelInfo";
 
 type LoggedInNoGroupScreenProps = {
   user: Prisma.UserGetPayload<{
     include: {
-      preferences: true
+      preferences: true,
+      travel: {
+        include: {
+          to: true,
+          from: true
+        }
+      }
     }
   }>;
 }
@@ -87,6 +94,7 @@ const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
         { error && <p>{ error }</p>}
       </div>
       <UserPreferencesForm preferences={user.preferences} />
+      <TravelInfo travel={user.travel} />
     </div>
   )
 }

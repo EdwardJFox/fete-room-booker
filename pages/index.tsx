@@ -11,7 +11,20 @@ import { Prisma } from '@prisma/client';
 type HomeProps = {
   loggedIn: boolean;
   user?: Prisma.UserGetPayload<{
-    include: { groupMember: { include: { group: true } }, preferences: true }
+    include: {
+      groupMember: {
+        include: {
+          group: true
+        }
+      },
+      preferences: true,
+      travel: {
+        include: {
+          to: true,
+          from: true
+        }
+      }
+    }
   }>;
   group?: Prisma.GroupGetPayload<{
     include: {
@@ -38,7 +51,13 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({ req, r
             group: true
           }
         },
-        preferences: true
+        preferences: true,
+        travel: {
+          include: {
+            to: true,
+            from: true,
+          }
+        }
       },
     })
 

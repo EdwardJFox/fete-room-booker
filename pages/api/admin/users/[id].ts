@@ -33,6 +33,10 @@ router
       data: {
         name: body.name,
         admin: body.admin,
+        // travelId: body.travelId || null,
+        travel: {
+          ...(body.travelId ? { connect: { id: body.travelId } } : { disconnect: true })
+        }
       }
     })
 

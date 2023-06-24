@@ -28,6 +28,12 @@ type AdminUsersEditProps = {
       }
     }
   }>;
+  travelOptions: Prisma.TravelGetPayload<{
+    include: {
+      to: true,
+      from: true
+    }
+  }>[];
 }
 
 export const getServerSideProps: GetServerSideProps<AdminUsersEditProps> = async ({ req, res, query }) => {
@@ -44,13 +50,22 @@ export const getServerSideProps: GetServerSideProps<AdminUsersEditProps> = async
           include: {
             group: true
           }
-        }
+        },
+        travel: true,
       }
     })
 
+    const travelOptions = await prisma.travel.findMany({
+      include: {
+        from: true,
+        to: true
+      }
+    });
+
     return {
       props: { 
-        user: JSON.parse(JSON.stringify(user))
+        user: JSON.parse(JSON.stringify(user)),
+        travelOptions: JSON.parse(JSON.stringify(travelOptions)),
       }
     }
   }
@@ -63,9 +78,13 @@ export const getServerSideProps: GetServerSideProps<AdminUsersEditProps> = async
   }
 }
 
-const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
+const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user, travelOptions }) => {
   const router = useRouter();
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState({
+    name: user.name,
+    admin: user.admin,
+    travelId: user.travelId
+  });
   const [error, setError] = useState(null);
 
   const submitUser = () => {
@@ -74,6 +93,7 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
       body: JSON.stringify({
         name: formData.name,
         admin: formData.admin,
+        travelId: formData.travelId,
       })
     }).then((res) => {
       if (res.ok) {
@@ -86,7 +106,7 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
     })
   }
 
-  const handleInputChange = (value: string | boolean, field: string) => {
+  const handleInputChange = (value: string | boolean | number | null, field: string) => {
     setFormData({ ...formData, [field]: value });
   }
 
@@ -120,11 +140,26 @@ const AdminUsersEdit: NextPage<AdminUsersEditProps> = ({ user }) => {
               onChange={handleInputChange}
               className="w-72" />
             
-            <p className="mt-2 mb-1"><b>Email:</b> { user.email }</p>
-            <p className="my-1"><b>Email invite sent at:</b> { user.sentInviteEmailAt ? format(parseISO(user.sentInviteEmailAt as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
-            <p className="my-1"><b>Email verified at:</b> { user.emailVerified ? format(parseISO(user.emailVerified as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
+            <p className="mt-3 mb-2"><b>Email:</b> { user.email }</p>
+            <p className="my-2"><b>Email invite sent at:</b> { user.sentInviteEmailAt ? format(parseISO(user.sentInviteEmailAt as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
+            <p className="my-2"><b>Email verified at:</b> { user.emailVerified ? format(parseISO(user.emailVerified as unknown as string), 'HH:mm MM/dd/yyyy') : 'Not sent' }</p>
 
-            <div className="my-3">
+            <div className="my-4">
+              <h4 className="text-xl">Travel</h4>
+              <p className="mb-2">If this user has signed up for a coach, you can choose which coach they are on here.</p>
+              <select
+                onChange={(e) => handleInputChange(e.target.value ? parseInt(e.target.value) : null, 'travelId')}
+                name="travelId"
+                className="py-2 px-3 rounded-md"
+                value={formData.travelId?.toString()}>
+                <option value={''}>- No travel -</option>
+                { travelOptions.map((option) => <option key={`option_${option.id}`} value={option.id}>
+                  {option.from.name} - {new Date(option.departTime).toLocaleString('en-GB')}
+                </option>) }
+              </select>
+            </div>
+
+            <div className="my-6">
               <CheckBox
                 label="User is an Admin"
                 name="admin"

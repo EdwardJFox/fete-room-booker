@@ -73,6 +73,9 @@ model User {
   admin         Boolean   @default(false)
   sentInviteEmailAt DateTime?
   preferences   Preference?
+  travelId      Int?
+  travel        Travel?     @relation(fields: [travelId], references: [id])
+  hideFromExport  Boolean  @default(false)
 }
 
 enum PreferenceTypeOfRoom {
@@ -93,6 +96,25 @@ model Preference {
   typeOfRoom  PreferenceTypeOfRoom? @default(QUIET)
   dietary     PreferenceDietaryRequirements? @default(NONE)
   comments    String?
+}
+
+model Travel {
+  id          Int                   @id @default(autoincrement())
+  fromId      Int
+  from        Location              @relation("TravelFromLocation", fields: [fromId], references: [id])
+  toId        Int
+  to          Location              @relation("TravelToLocation", fields: [toId], references: [id])
+  departTime  DateTime
+  returnTime  DateTime
+  users       User[]
+}
+
+model Location {
+  id          Int       @id @default(autoincrement())
+  name        String
+  address     String
+  fromTravels Travel[]  @relation("TravelFromLocation")
+  toTravels   Travel[]  @relation("TravelToLocation")
 }
 
 model VerificationToken {

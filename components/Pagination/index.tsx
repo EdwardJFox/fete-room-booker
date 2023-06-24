@@ -88,11 +88,11 @@ const Pagination = ({
         <div>
           {pagesToDisplay.map((page) => (
             page === 'spacer' ?
-            <PageSpacer />
+            <PageSpacer key={`pagination_${page}`} />
             :
             <PaginationButton
-              disabled={page === currentPage}
               key={`pagination_${page}`}
+              disabled={page === currentPage}
               onClick={() => onPageChange(page)}
               active={page === currentPage}
             >

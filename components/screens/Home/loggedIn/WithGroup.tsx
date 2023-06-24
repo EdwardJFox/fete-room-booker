@@ -3,12 +3,19 @@ import UserPreferencesForm from "../../../UserPreferences/Form";
 import GroupHeader from "./components/GroupHeader";
 import GroupMembers from "./components/GroupMembers";
 import Pending from "./components/Pending";
+import TravelInfo from "components/TravelInfo";
 
 type LoggedInWithGroupScreenProps = {
   user: Prisma.UserGetPayload<{
     include: {
       groupMember: true,
       preferences: true,
+      travel: {
+        include: {
+          to: true,
+          from: true
+        }
+      }
     }
   }>;
 
@@ -43,6 +50,7 @@ const LoggedInWithGroupScreen = ({ user, group }: LoggedInWithGroupScreenProps) 
         groupId={group.id}
         code={group.code} />
       <UserPreferencesForm preferences={user.preferences} />
+      <TravelInfo travel={user.travel} />
     </div>
   )
 }

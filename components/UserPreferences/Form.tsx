@@ -62,27 +62,6 @@ const UserPreferencesForm = ({ preferences }: UserPreferencesFormProps) => {
           checked={userPreferences["typeOfRoom"] === "PARTY"}
           onChange={handleInputChange} />
       </div>
-      {/* <div className="mb-3">
-        <p className="text-sm">Dietary Requirements</p>
-        <Radio
-          label="None"
-          name="dietary"
-          value="NONE"
-          checked={userPreferences["dietary"] === "NONE"}
-          onChange={handleInputChange} />
-        <Radio
-          label="Vegetarian"
-          name="dietary"
-          value="VEGETARIAN"
-          checked={userPreferences["dietary"] === "VEGETARIAN"}
-          onChange={handleInputChange} />
-        <Radio
-          label="Vegan"
-          name="dietary"
-          value="VEGAN"
-          checked={userPreferences["dietary"] === "VEGAN"}
-          onChange={handleInputChange} />
-      </div> */}
       <TextArea
         className="mb-4"
         label="Other comments"

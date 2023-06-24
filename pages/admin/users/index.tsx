@@ -98,7 +98,7 @@ const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, meta }): React
                       <TH>Name</TH>
                       <TH>Email</TH>
                       <TH>Signed up</TH>
-                      <TH>Admin</TH>
+                      <TH>Travel</TH>
                       <TH>Actions</TH>
                     </TR>
                   </THead>
@@ -108,7 +108,7 @@ const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, meta }): React
                         <TD>{ user.name }</TD>
                         <TD>{ user.email }</TD>
                         <TD>{ user.emailVerified ? "Yes" : "No" }</TD>
-                        <TD>{ user.admin ? "Yes" : "No" }</TD>
+                        <TD>{ user.travelId ? "Yes" : "No" }</TD>
                         <TD>
                           <ButtonLink href={`/admin/users/${user.id}`} size="sm">Edit</ButtonLink>
                         </TD>
