@@ -25,10 +25,10 @@ RUN npm install
 
 RUN npx prisma generate
 
-RUN npx prisma migrate deploy
-
 # Copy the rest of our Next.js folder into /app
 COPY . /app
+
+RUN npx prisma migrate deploy
 
 # Ensure port 3000 is accessible to our system
 EXPOSE 3000
