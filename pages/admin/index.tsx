@@ -122,7 +122,6 @@ export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = asyn
 }
 
 const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, groups, travels }) => {
-  console.log("travels", travels);
   const getUsersExport = () => {
     fetch('/api/admin/export')
       .then((res) => res.blob())
