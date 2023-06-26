@@ -1,5 +1,6 @@
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { parseISO, format } from 'date-fns';
 import type { GetServerSideProps, NextPage } from 'next'
 import { getServerSession } from 'next-auth'
 import Head from 'next/head'
@@ -21,7 +22,15 @@ type AdminUsersIndexProps = {
     total: number;
     averageMembers: number;
     empty: number;
-  }
+  },
+  travels: Record<string, {
+    departTime: string;
+    users: {
+      email: string;
+      name: string;
+    }[]
+  }[]
+  >
 }
 
 export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = async ({ req, res, query }) => {
@@ -55,6 +64,38 @@ export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = asyn
       where: { members: { none: {} } },
     });
 
+    const countOfUsersPerTravel = await prisma.travel.findMany({
+      select: {
+        _count: {
+          select: {
+            users: true,
+          },
+        },
+        from: {
+          select: {
+            name: true,
+          },
+        },
+        departTime: true,
+        users: {
+          select: {
+            email: true,
+            name: true
+          }
+        }
+      },
+    });
+
+    const groupedUsersPerTravel = countOfUsersPerTravel.reduce((grouped: any, travel) => {
+      if (!grouped[travel.from.name]) {
+        grouped[travel.from.name] = [];
+      }
+
+      grouped[travel.from.name].push(travel);
+
+      return grouped;
+    }, {});
+
     return {
       props: {
         users: {
@@ -62,6 +103,7 @@ export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = asyn
           completedSignUp: completedSignUpUsers._count,
           inGroup: inGroupUsers._count,
         },
+        travels: JSON.parse(JSON.stringify(groupedUsersPerTravel)),
         groups: {
           total: totalGroups._count,
           averageMembers: (inGroupUsers._count > 0 && totalGroups._count > 0) ? (inGroupUsers._count / totalGroups._count) : 0,
@@ -79,7 +121,8 @@ export const getServerSideProps: GetServerSideProps<AdminUsersIndexProps> = asyn
   }
 }
 
-const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, groups }) => {
+const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, groups, travels }) => {
+  console.log("travels", travels);
   const getUsersExport = () => {
     fetch('/api/admin/export')
       .then((res) => res.blob())
@@ -112,7 +155,7 @@ const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, groups }) => {
               <FontAwesomeIcon icon={faChevronRight} className="mr-2" /> User Management
             </Link>
           </div>
-          <h2 className="mt-5">Groups</h2>
+          <h2 className="mt-6">Groups</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-2">
             <Tile label="Total" value={groups.total} />
             <Tile label="Avg Members" value={groups.averageMembers.toFixed(1)} />
@@ -123,6 +166,24 @@ const AdminUsersIndex: NextPage<AdminUsersIndexProps> = ({ users, groups }) => {
               <FontAwesomeIcon icon={faChevronRight} className="mr-2" /> Group Management
             </Link>
           </div>
+          
+          <h2 className="mt-6">Travel</h2>
+          <div className="mt-2">
+            { Object.entries(travels).map(([location, travels]) =>
+              <div key={location} className="mb-4">
+                <h3 className="text-xl mt-2 mb-1">{ location }</h3>
+                {travels.map((travel) =>
+                  <div key={`${location}_${travel.departTime}`} className="bg-secondary-600 rounded-md p-4 flex flex-col justify-between mb-2">
+                    <div className="flex justify-between items-center">
+                      <h4 className="text-lg">{ format(parseISO(travel.departTime), "HH:mm 'on' MM/dd/yyyy") }</h4>
+                      <h4 className="text-lg">Number on coach: { travel.users.length }</h4>
+                    </div>
+                  </div>
+                )}                
+              </div>
+            )}
+          </div>
+
           <h2 className="mt-5">Export CSV</h2>
           <p>This CSV contains all the users in the system, whether they have signed up or not, their group and preferences.</p>
           <div className="mt-4 mb-5">
