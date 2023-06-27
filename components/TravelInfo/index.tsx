@@ -1,8 +1,11 @@
-import { format, parseISO } from 'date-fns'
+import { parseISO } from 'date-fns'
+import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
 
 import { Prisma } from "@prisma/client";
 import { faBus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const timeZone = 'Europe/London';
 
 type TravelInfoProps = {
   travel: Prisma.TravelGetPayload<{
@@ -22,6 +25,7 @@ type TravelInfoEntryProps = {
 
 const TravelInfoEntry = ({ title, location, address, time }: TravelInfoEntryProps) => {
   const date = parseISO(time as unknown as string)
+  const zonedDate = utcToZonedTime(date, timeZone)
 
   return (
     <div className="flex items-center">
@@ -34,7 +38,7 @@ const TravelInfoEntry = ({ title, location, address, time }: TravelInfoEntryProp
       </div>
       <div className="flex-1 ml-4">
         <h3 className="text-xl">{title}</h3>
-        <p className="mt-1 mb-2"><strong>{location}</strong> on {format(date, "eeee LLLL do 'at' HH:mmaaa")}</p>
+        <p className="mt-1 mb-2"><strong>{location}</strong> on {format(zonedDate, "eeee LLLL do 'at' HH:mmaaa", { timeZone })}</p>
         <p className="text-sm">{address}</p>
       </div>
     </div>
