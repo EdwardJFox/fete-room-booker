@@ -11,6 +11,7 @@ import { RequestWithUser } from 'types/requests';
 import { format, utcToZonedTime } from 'date-fns-tz';
 
 const timeZone = 'Europe/London';
+process.env.TZ = 'Europe/London'
 
 const router = createRouter<RequestWithUser, NextApiResponse>();
 
