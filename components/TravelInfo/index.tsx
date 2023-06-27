@@ -1,5 +1,5 @@
 import { parseISO } from 'date-fns'
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
+import { utcToZonedTime, format } from 'date-fns-tz';
 
 import { Prisma } from "@prisma/client";
 import { faBus } from "@fortawesome/free-solid-svg-icons";

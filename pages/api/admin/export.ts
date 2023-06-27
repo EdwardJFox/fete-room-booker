@@ -8,7 +8,9 @@ import loadUser from 'middlewares/api/loadUser';
 import { handlerOptions } from '../_default';
 import prisma from "lib/prismadb"
 import { RequestWithUser } from 'types/requests';
-import { format } from 'date-fns';
+import { format } from 'date-fns-tz';
+
+const timeZone = 'Europe/London';
 
 const router = createRouter<RequestWithUser, NextApiResponse>();
 
@@ -55,7 +57,7 @@ router
           preferenceComments: user.preferences?.comments,
           travel: user.travel ? "Yes" : "No",
           travelFrom: user.travel?.from.name,
-          travelTime: user.travel?.departTime ? format(new Date(user.travel.departTime), "HH:mm") : '',
+          travelTime: user.travel?.departTime ? format(new Date(user.travel.departTime), "HH:mm", { timeZone }) : '',
         })
         return rows;
       }, []);
