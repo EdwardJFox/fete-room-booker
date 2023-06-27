@@ -38,7 +38,7 @@ const TravelInfoEntry = ({ title, location, address, time }: TravelInfoEntryProp
       </div>
       <div className="flex-1 ml-4">
         <h3 className="text-xl">{title}</h3>
-        <p className="mt-1 mb-2"><strong>{location}</strong> on {format(zonedDate, "eeee LLLL do 'at' HH:mmaaa", { timeZone })}</p>
+        <p className="mt-1 mb-2"><strong>{location}</strong> on {format(zonedDate, "eeee LLLL do 'at' HH:mm", { timeZone })}</p>
         <p className="text-sm">{address}</p>
       </div>
     </div>

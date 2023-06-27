@@ -8,6 +8,7 @@ import loadUser from 'middlewares/api/loadUser';
 import { handlerOptions } from '../_default';
 import prisma from "lib/prismadb"
 import { RequestWithUser } from 'types/requests';
+import { format } from 'date-fns';
 
 const router = createRouter<RequestWithUser, NextApiResponse>();
 
@@ -20,6 +21,12 @@ router
       const users = await prisma.user.findMany({
         include: {
           preferences: true,
+          travel: {
+            include: {
+              to: true,
+              from: true,
+            }
+          },
           groupMember: {
             include: {
               group: {
@@ -45,8 +52,10 @@ router
           groupOwner: user.groupMember?.owner ? "Yes" : "No",
           groupApproved: user.groupMember?.approved ? "Yes" : "No",
           preferenceTypeOfRoom: user.preferences?.typeOfRoom,
-          preferenceDietary: user.preferences?.dietary,
           preferenceComments: user.preferences?.comments,
+          travel: user.travel ? "Yes" : "No",
+          travelFrom: user.travel?.from.name,
+          travelTime: user.travel?.departTime ? format(new Date(user.travel.departTime), "HH:mm") : '',
         })
         return rows;
       }, []);
