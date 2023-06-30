@@ -56,7 +56,7 @@ const GroupMember = ({ member, onRemove, onApprove, isOwner, isSelf }: GroupMemb
         </p>
       </div>
 
-      <div className="flex-initial">
+      {/* <div className="flex-initial">
         { isSelf && !isOwner &&
           <Button size="sm" style="danger" onClick={removeSelfFromGroup}>Remove Myself</Button>
         }
@@ -66,7 +66,7 @@ const GroupMember = ({ member, onRemove, onApprove, isOwner, isSelf }: GroupMemb
             <Button size="sm" style="danger" onClick={() => onRemove(member.userId)}>Remove</Button>
           </>
         }
-      </div>
+      </div> */}
     </div>
   )
 }

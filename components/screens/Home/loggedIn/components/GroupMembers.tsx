@@ -52,7 +52,7 @@ const GroupMembers = ({ isOwner, members, groupId, loggedInUserId, code }: Group
 
   return (
     <>
-      <div className="flex items-center justify-between mt-3 mb-2">
+      {/* <div className="flex items-center justify-between mt-3 mb-2">
         <h2 className="inline">Members</h2>
         <button onClick={() => copy(url)} className="ml-3 text-white block">
           { value ?
@@ -61,7 +61,7 @@ const GroupMembers = ({ isOwner, members, groupId, loggedInUserId, code }: Group
             <><FontAwesomeIcon icon={faCopy} height={22} className="inline" /> Copy join URL</>
           }
         </button>
-      </div>
+      </div> */}
       { currentMembers.map((member) =>
         <GroupMemberRow
           key={member.userId}

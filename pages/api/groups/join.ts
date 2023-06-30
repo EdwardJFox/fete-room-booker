@@ -7,6 +7,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  res.status(404);
+  return res.end();
+
   if (req.method === 'POST') {
     const session = await getServerSession(req, res, authOptions)
 

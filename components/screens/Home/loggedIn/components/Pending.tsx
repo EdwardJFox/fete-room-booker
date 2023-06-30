@@ -1,7 +1,7 @@
 import { Preference } from "@prisma/client";
 import { useRouter } from "next/router";
 import Button from "../../../../Button";
-import UserPreferencesForm from "../../../../UserPreferences/Form";
+import UserPreferencesView from "components/UserPreferences/View";
 
 type PendingProps = {
   preferences: Preference | null;
@@ -29,7 +29,7 @@ const Pending = ({ preferences, groupName }: PendingProps) => {
         <p>Your join request to { groupName } is now pending.</p>
         <Button className="mt-3" style="danger" onClick={removeSelfFromGroup}>Cancel request</Button>
       </div>
-      <UserPreferencesForm preferences={preferences} />
+      <UserPreferencesView preferences={preferences} />
     </div>
   );
 }

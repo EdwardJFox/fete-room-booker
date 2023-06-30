@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Button from "../../../Button";
 import TextField from "../../../form/TextField";
-import UserPreferencesForm from "../../../UserPreferences/Form";
 import TravelInfo from "components/TravelInfo";
+import UserPreferencesView from "components/UserPreferences/View";
 
 type LoggedInNoGroupScreenProps = {
   user: Prisma.UserGetPayload<{
@@ -58,7 +58,11 @@ const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
 
   return (
     <div className="max-w-2xl mx-2 sm:mx-auto">
-      <div className="py-3 px-4 my-4 bg-secondary-600 rounded-md">
+      <div className="py-5 px-8 my-4 bg-secondary-600 rounded-md">
+        <h1>Signup and room allocation has now ended!</h1>
+        <p className="mt-2">For any last minute changes, contact the Fete team.</p>
+      </div>
+      {/* <div className="py-3 px-4 my-4 bg-secondary-600 rounded-md">
         <h2 className="mb-3">Join a group</h2>
         <p>If you have the code, you can join a group:</p>
         <div className="flex items-end mt-3">
@@ -70,9 +74,9 @@ const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
             onChange={(value) => setCode(value)} />
           <Button className="flex-initial ml-3" onClick={joinGroup}>Join Group</Button>
         </div>
-      </div>
+      </div> */}
 
-      <div className="py-3 px-4 bg-secondary-600 rounded-md">
+      {/* <div className="py-3 px-4 bg-secondary-600 rounded-md">
         <h2 className="mb-3">Start a new group</h2>
         <p>Creating a group will allow you to organise your accommodation with your friends at Fete 3!</p>
         <div className="md:flex md:items-end mt-3">
@@ -92,8 +96,8 @@ const LoggedInNoGroupScreen = ({ user }: LoggedInNoGroupScreenProps) => {
           </Button>
         </div>
         { error && <p>{ error }</p>}
-      </div>
-      <UserPreferencesForm preferences={user.preferences} />
+      </div> */}
+      <UserPreferencesView preferences={user.preferences} />
       <TravelInfo travel={user.travel} />
     </div>
   )
