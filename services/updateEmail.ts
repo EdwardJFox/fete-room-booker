@@ -1,13 +1,18 @@
 import { sendEmail } from "../lib/email";
-import prisma from "../lib/prismadb"
+import { PrismaClient } from '@prisma/client'
 import { updateEmailTemplate } from "./updateEmailTemplate";
 
 process.env.TZ = 'Europe/London'
 
+const prisma = new PrismaClient()
+
 async function main() {
   const users = await prisma.user.findMany({
     where: {
-      sentUpdateEmailAt: null
+      sentUpdateEmailAt: null,
+      id: {
+        gt: 305
+      }
     },
     include: {
       preferences: true,
@@ -46,7 +51,7 @@ async function main() {
         data: {
           sentUpdateEmailAt: new Date(),
         }
-      });  
+      });
     }
   }
 }
