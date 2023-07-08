@@ -9,7 +9,8 @@
     "lint": "next lint",
     "migrate": "prisma migrate dev",
     "migrate:deploy": "prisma migrate deploy",
-    "seed-travel": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/locations_seed.ts"
+    "seed-travel": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/locations_seed.ts",
+    "send-update-email": "ts-node -T --compiler-options '{\"module\":\"CommonJS\"}' services/updateEmail.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
