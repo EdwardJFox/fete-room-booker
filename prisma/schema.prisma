@@ -77,6 +77,7 @@ model User {
   travel        Travel?     @relation(fields: [travelId], references: [id])
   hideFromExport  Boolean  @default(false)
   sentUpdateEmailAt DateTime?
+  sentTravelEmailAt DateTime?
 }
 
 enum PreferenceTypeOfRoom {
